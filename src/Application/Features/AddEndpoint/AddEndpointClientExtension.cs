@@ -9,7 +9,7 @@ using MockEndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.
 
 namespace Mockingjay.Features.AddEndpoint
 {
-    public static class AddEndpointClientExtensons
+    public static class AddEndpointClientExtension
     {
         public static async Task<MockEndpointId> AddEndpointAsync(this MockingjayClient client, AddEndpointCommand request, CancellationToken cancellationToken = default)
         {

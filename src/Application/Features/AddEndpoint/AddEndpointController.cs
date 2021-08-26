@@ -13,7 +13,7 @@ namespace Mockingjay.Features.AddEndpoint
     {
         [HttpPost("endpoint")]
         [Produces(typeof(EndpointId))]
-        [SwaggerOperation(Tags = new[] { "Dossier" })]
+        [SwaggerOperation(Tags = new[] { "Endpoints" })]
         public async Task<IActionResult> AddEndpoint(
             [FromBody] AddEndpointCommand cmd,
             CancellationToken cancellationToken = default)

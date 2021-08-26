@@ -2,7 +2,7 @@
 using Mockingjay;
 using Mockingjay.Common.Handling;
 using Mockingjay.Entities;
-using Mockingjay.Features.GetEndpointInformation;
+using Mockingjay.Features.GetEndpoint;
 using System.Threading.Tasks;
 
 namespace WorkerService.Middleware
@@ -21,8 +21,8 @@ namespace WorkerService.Middleware
             Guard.NotNull(context, nameof(context));
             Guard.NotNull(next, nameof(next));
 
-            var endpointInfo = await _commandProcessor.SendAsync<GetEndpointInformationCommand, EndpointInformation>(
-                new GetEndpointInformationCommand
+            var endpointInfo = await _commandProcessor.SendAsync<GetEndpointCommand, EndpointInformation>(
+                new GetEndpointCommand
                 {
                     Path = context.Request.Path,
                     Method = context.Request.Method,

@@ -3,11 +3,11 @@ using Mockingjay.Entities;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mockingjay.Features.GetEndpointInformation
+namespace Mockingjay.Features.GetEndpoint
 {
-    public static class EndpointRepositoryGetByRequest
+    public static class GetEndpointByRequest
     {
-        public static async Task<EndpointInformation> GetByRequestAsync(this IRepository<EndpointInformation> repository, string path, string method)
+        public static async Task<EndpointInformation> GetEndpointByRequestAsync(this IRepository<EndpointInformation> repository, string path, string method)
         {
             Guard.NotNull(repository, nameof(repository));
             var result = repository.AsQueryable().FirstOrDefault(x => x.Path == path && x.Method == method);

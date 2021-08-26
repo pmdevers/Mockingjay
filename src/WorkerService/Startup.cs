@@ -29,16 +29,15 @@ namespace WorkerService
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpContextAccessor();
             services.AddAuthorization();
 
-            services.AddCommandHandlers(typeof(Guard).Assembly);
-            services.AddTransient<ICommandProcessor, CommandProcessor>();
-            services.AddTransient(typeof(IEventStore<>), typeof(InMemoryEventstore<>));
-            services.AddHttpContextAccessor();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<MockingjayMiddleware>();
-            services.AddSingleton<IRepository<EndpointInformation>, EndpointInformationRepository>();
+            services.AddCommandHandlers();
+            services.AddHandling();
+            services.AddEventStore();
+            services.AddSecurity();
+            services.AddRepositories();
+
+            services.AddMockingjay();
 
             // example for health checks
             services.AddHealthChecks();
@@ -63,16 +62,12 @@ namespace WorkerService
             app.UseRouting();
             app.UseAuthorization();
 
-            app.UseMiddleware<MockingjayMiddleware>();
-            //app.Run(async (context) =>
-            //{
-            //    await context.Response.WriteAsync("hello world");
-            //});
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            app.UseMockingjay();
         }
     }
 }
