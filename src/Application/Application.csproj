@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="..\..\props\production.props" />
 
@@ -8,6 +8,11 @@
 
 	<ItemGroup>
 	  <Folder Include="Common\Identitifiers\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.3" />
+	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
 	</ItemGroup>
 
 </Project>
