@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\..\rules\production.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.14.0.22654">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    </ItemGroup>
+  
+  <ItemGroup>
+    <!-- Shared assembly tags. -->
+    <Compile Include="$(SolutionDir)\shared\AssemblyInfo.shared.cs" Link="Properties\AssemblyInfo.shared.cs" />
+	<!-- <Compile Include="$(SolutionDir)\shared\Guard.cs" Link="Guard.cs" /> -->
+  </ItemGroup>
+</Project>
