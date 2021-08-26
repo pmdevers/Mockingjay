@@ -49,7 +49,7 @@ namespace Infrastructure.Handling
 
         private static Task<TResult> GetPipeline<TCommand, TResult>(IServiceScope scope, TCommand command, CancellationToken cancellationToken, Func<Task<TResult>> handler)
         {
-            var behaviors = scope.ServiceProvider.GetServices<IPipelineBehavour<TCommand, TResult>>()
+            var behaviors = scope.ServiceProvider.GetServices<IPipelineBehavior<TCommand, TResult>>()
                                     .Reverse();
 
             var aggregate =

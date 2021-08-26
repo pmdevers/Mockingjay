@@ -37,17 +37,12 @@ namespace WorkerService
             services.AddSecurity();
             services.AddRepositories();
 
-            services.AddMockingjay();
-
             // example for health checks
             services.AddHealthChecks();
 
             services.AddSwaggerGen();
 
-            services.AddControllers().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.SetApplicationDefaultSettings();
-            });
+            services.AddMockingjay();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -61,11 +56,6 @@ namespace WorkerService
             app.UseSwaggerUI();
             app.UseRouting();
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
 
             app.UseMockingjay();
         }
