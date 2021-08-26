@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Application.Common.Messaging
+namespace Mockingjay.Common.Messaging
 {
     public interface IMessagePublisher
     {

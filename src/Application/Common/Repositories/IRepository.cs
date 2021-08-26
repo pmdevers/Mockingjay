@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 
-namespace Application.Common.Repositories
+namespace Mockingjay.Common.Repositories
 {
     public interface IRepository<T>
     {

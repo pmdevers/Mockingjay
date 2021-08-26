@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Application.Common.Formatting
+namespace Mockingjay.Common.Formatting
 {
     public static class StringFormatter
     {

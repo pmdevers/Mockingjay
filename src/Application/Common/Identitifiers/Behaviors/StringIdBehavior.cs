@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 
-namespace Application.Common.Identifiers.Behaviors
+namespace Mockingjay.Common.Identifiers.Behaviors
 {
      public class StringIdBehavior : IIdentifierBehavior
      {

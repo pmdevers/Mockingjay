@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
 
-using Application.Common.DomainModel;
+using Mockingjay.Common.DomainModel;
 
-namespace Application.Common.Storage
+namespace Mockingjay.Common.Storage
 {
     public interface IEventStore<TId>
     {

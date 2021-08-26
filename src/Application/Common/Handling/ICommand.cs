@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Application.Common.Handling
+namespace Mockingjay.Common.Handling
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Minor Code Smell",

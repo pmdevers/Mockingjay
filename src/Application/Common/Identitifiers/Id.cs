@@ -3,9 +3,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.Serialization;
-using Application.Common.Formatting;
+using Mockingjay.Common.Formatting;
 
-namespace Application.Common.Identifiers
+namespace Mockingjay.Common.Identifiers
 {
     /// <summary>Represents a strongly typed identifier.</summary>
     /// <typeparam name="TIdentifier">

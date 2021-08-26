@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Application.Common.DomainModel
+namespace Mockingjay.Common.DomainModel
 {
     public class AggregateRoot<T, TId> : AggregateRoot<T>
         where T : AggregateRoot<T>
@@ -22,7 +22,7 @@ namespace Application.Common.DomainModel
         internal void Replay(EventBuffer<TId> eventBuffer)
         {
             Buffer = new EventBuffer<TId>(eventBuffer.AggregateId, eventBuffer.CommittedVersion);
-            Replay(eventBuffer.GetCommitted());
+            Replay(eventBuffer.Committed);
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Common.Handling
+namespace Mockingjay.Common.Handling
 {
     public interface IPipelineBehavour<in TRequest, TResult>
     {

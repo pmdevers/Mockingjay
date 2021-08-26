@@ -1,10 +1,10 @@
-﻿using Application.Common.Handling;
+﻿using Mockingjay.Common.Handling;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Application.Common.Http
+namespace Mockingjay.Common.Http
 {
     [Route("api")]
     //[Authorize]

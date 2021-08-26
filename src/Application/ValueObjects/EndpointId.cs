@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Application.Common.Identifiers.Behaviors;
+using Mockingjay.Common.Identifiers.Behaviors;
 
-namespace Application.ValueObjects
+namespace Mockingjay.ValueObjects
 {
     public sealed class ForMockEndpoint : GuidBehavior { }
 }

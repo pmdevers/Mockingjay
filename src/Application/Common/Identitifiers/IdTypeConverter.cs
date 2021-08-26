@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace Application.Common.Identifiers
+namespace Mockingjay.Common.Identifiers
 {
     /// <summary>Provides a conversion for strongly typed identifiers.</summary>
     public sealed class IdTypeConverter : TypeConverter

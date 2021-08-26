@@ -1,4 +1,4 @@
-namespace Application.Common.DomainModel
+namespace Mockingjay.Common.DomainModel
 {
     public static class AggregateRoot
     {

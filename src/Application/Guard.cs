@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 
-namespace Application
+namespace Mockingjay
 {
     /// <summary>Supplies parameter guarding for methods and constructors.</summary>
     /// <remarks>

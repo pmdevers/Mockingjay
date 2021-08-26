@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Application.Common.Text
+namespace Mockingjay.Common.Text
 {
      public static class Base32
     {

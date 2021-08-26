@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Application.Common.DomainModel
+namespace Mockingjay.Common.DomainModel
 {
     public delegate object ConvertFromStoredEvent<in TStoredEvent>(TStoredEvent storedEvent);
     public delegate TStoredEvent ConvertToStoredEvent<in TId, out TStoredEvent>(TId aggregateId, int version, object @event);

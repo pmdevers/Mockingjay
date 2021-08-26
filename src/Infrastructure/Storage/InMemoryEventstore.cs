@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Mockingjay;
+using Mockingjay.Common.DomainModel;
+using Mockingjay.Common.Security;
+using Mockingjay.Common.Storage;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-using Application;
-using Application.Common.DomainModel;
-using Application.Common.Security;
-using Application.Common.Storage;
 
 namespace Infrastructure.Storage
 {

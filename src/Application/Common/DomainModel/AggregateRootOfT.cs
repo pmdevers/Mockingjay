@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Application.Common.DomainModel
+namespace Mockingjay.Common.DomainModel
 {
     public abstract class AggregateRoot<T>
         where T : AggregateRoot<T>

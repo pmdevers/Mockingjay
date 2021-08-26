@@ -1,24 +1,24 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-using Application.Common.Http;
-using Application.Common.Identifiers;
-using Application.ValueObjects;
-
 using Microsoft.AspNetCore.Mvc;
+using Mockingjay.Common.Http;
+using Swashbuckle.AspNetCore.Annotations;
 
-namespace Application.Features.AddEndpoint
+using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForMockEndpoint>;
+
+namespace Mockingjay.Features.AddEndpoint
 {
     public class AddEndpointController : ApiControllerBase
     {
         [HttpPost("endpoint")]
-        [Produces(typeof(Id<ForMockEndpoint>))]
-        //[SwaggerOperation(Tags = new[] { "Dossier" })]
+        [Produces(typeof(EndpointId))]
+        [SwaggerOperation(Tags = new[] { "Dossier" })]
         public async Task<IActionResult> AddEndpoint(
             [FromBody] AddEndpointCommand cmd,
             CancellationToken cancellationToken = default)
         {
-            return Ok(await CommandProcessor.SendAsync<AddEndpointCommand, Id<ForMockEndpoint>>(cmd, cancellationToken));
+            return Ok(await CommandProcessor.SendAsync<AddEndpointCommand, EndpointId>(cmd, cancellationToken));
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Application.Common.Identifiers
+namespace Mockingjay.Common.Identifiers
 {
     /// <summary>Injectable behavior for strongly typed identifiers (<see cref="Id{TIdentifier}"/>).</summary>
     /// <remarks>

@@ -1,20 +1,17 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-using Application.Common.Handling;
-using Application.Common.Repositories;
-using Application.Common.Security;
-using Application.Common.Storage;
-using Application.Entities;
+using Mockingjay.Common.Handling;
+using Mockingjay.Common.Storage;
+using Mockingjay.Entities;
 
-using MockEndpointId = Application.Common.Identifiers.Id<Application.ValueObjects.ForMockEndpoint>;
+using MockEndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForMockEndpoint>;
 
-namespace Application.Features.AddEndpoint
+namespace Mockingjay.Features.AddEndpoint
 {
     public class AddEndpointCommandHandler : IRequestHandler<AddEndpointCommand, MockEndpointId>
     {
         private readonly IEventStore<MockEndpointId> _eventStore;
-        private readonly IUserService _userService;
 
         public AddEndpointCommandHandler(IEventStore<MockEndpointId> eventStore)
         {
@@ -29,7 +26,7 @@ namespace Application.Features.AddEndpoint
 
             await _eventStore.SaveAsync(endpoint.Buffer);
 
-            return Task.FromResult(endpoint.Id);
+            return endpoint.Id;
         }
     }
 }

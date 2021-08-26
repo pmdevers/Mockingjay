@@ -1,12 +1,12 @@
 ﻿using System;
 
-using Application.Common.DomainModel;
+using Mockingjay.Common.DomainModel;
 
 using Microsoft.AspNetCore.Http;
 
-using MockEndpointId = Application.Common.Identifiers.Id<Application.ValueObjects.ForMockEndpoint>;
+using MockEndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForMockEndpoint>;
 
-namespace Application.Entities
+namespace Mockingjay.Entities
 {
     public class MockEndpoint : AggregateRoot<MockEndpoint, MockEndpointId>
     {

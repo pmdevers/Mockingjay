@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
-namespace Application.Common.DomainModel
+namespace Mockingjay.Common.DomainModel
 {
     [Serializable]
     public class EventTypeNotSupportedException : NotSupportedException

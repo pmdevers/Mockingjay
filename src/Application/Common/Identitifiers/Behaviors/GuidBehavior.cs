@@ -2,9 +2,9 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
-using Application.Common.Text;
+using Mockingjay.Common.Text;
 
-namespace Application.Common.Identifiers.Behaviors
+namespace Mockingjay.Common.Identifiers.Behaviors
 {
     /// <summary>Implements <see cref="IIdentifierBehavior"/> for an identifier based on <see cref="Guid"/>.</summary>
     public class GuidBehavior : IIdentifierBehavior

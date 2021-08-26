@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace Application.Tests
+namespace Mockingjay.Tests
 {
     public class Tests
     {

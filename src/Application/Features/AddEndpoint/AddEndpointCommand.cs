@@ -1,13 +1,11 @@
-﻿using Application.Common.Handling;
+﻿using Mockingjay.Common.Handling;
 
-using Microsoft.AspNetCore.Http;
+using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForMockEndpoint>;
 
-using EndpointId = Application.Common.Identifiers.Id<Application.ValueObjects.ForMockEndpoint>;
-
-namespace Application.Features.AddEndpoint
+namespace Mockingjay.Features.AddEndpoint
 {
     public class AddEndpointCommand : ICommand<EndpointId>
     {
-        public PathString Path { get; set; }
+        public string Path { get; set; }
     }
 }
