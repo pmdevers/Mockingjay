@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Mockingjay.Features.GetEndpoint
 {
-    public static class GetEndpointByRequest
+    public static class GetEndpointRepositoryExtensions
     {
         public static async Task<EndpointInformation> GetEndpointByRequestAsync(this IRepository<EndpointInformation> repository, string path, string method)
         {

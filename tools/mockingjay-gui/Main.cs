@@ -1,7 +1,6 @@
-﻿using Mockingjay.Common.Http;
-using Mockingjay.Entities;
-using Mockingjay.Features.AddEndpoint;
-using Mockingjay.Features.GetEndpoint;
+﻿using mockingjay.Dialogs;
+using Mockingjay.Common.Http;
+using Mockingjay.Features.GetEndpoints;
 using System;
 
 using System.Threading.Tasks;
@@ -13,37 +12,54 @@ namespace mockingjay
 {
     public partial class Main : Form
     {
-        public Main(MockingjayClient client)
+        
+        private readonly AddEndpointDialog _endpointDialog;
+        private int _page = 1;
+        private int _itemsPerPage = 50;
+
+        public Main(MockingjayClient client, AddEndpointDialog endpointDialog)
         {
+            
             InitializeComponent();
             Client = client;
+            _endpointDialog = endpointDialog;
         }
 
         public MockingjayClient Client { get; }
 
         private async void Main_Load(object sender, EventArgs e)
-        {
-
-            Task<EndpointId> task = Task.Run(() => Client.AddEndpointAsync(new AddEndpointCommand {
-                    Path = "/test",
-                    Method= "GET",
-                    ContentType= "application/json",
-                    Response = "Test Test",
-                    StatusCode = 201
-                }));
-
-            var result = await task;
-            
-            label1.Text = result.ToString();
-
-            Task<EndpointInformation> task1 = Task.Run(() => Client.GetEndpointByRequest(new GetEndpointCommand { Path = "/test", Method = "GET" }));
-
-            var result2 = (await task1);
-            textBox1.Text = result2.Response;
-
+        {          
+            await ReloadAsync();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            _endpointDialog.ShowDialog(this);
+        }
+
+        private async void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            await ReloadAsync();
+        }
+
+        private async Task ReloadAsync()
+        {
+            listView1.Items.Clear();
+            var results = await Client.GetEndpointsAsync(_page, _itemsPerPage);
+
+            foreach (var endpoint in results.Items)
+            {
+                var item = new ListViewItem();
+
+                item.Tag = endpoint.Id;
+                item.SubItems.Add(endpoint.Method);
+                item.SubItems.Add(endpoint.Path);
+                item.SubItems.Add(endpoint.ContentType);
+                listView1.Items.Add(item);
+            }
+        }
+
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
         }

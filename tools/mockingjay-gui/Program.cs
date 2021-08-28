@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using mockingjay.Dialogs;
 using Mockingjay;
 using Mockingjay.Common.Http;
 using Mockingjay.Common.Json;
@@ -38,6 +39,7 @@ namespace mockingjay
             services.AddHttpClient<MockingjayClient>(x => x.BaseAddress = new Uri("http://localhost:5050/api"));
             services.AddOptions<JsonSerializerOptions>().Configure(x => x.SetApplicationDefaultSettings());
             services.AddScoped<Main>();
+            services.AddScoped<AddEndpointDialog>();
             
         }
     }

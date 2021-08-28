@@ -1,10 +1,10 @@
-using Mockingjay.Common.Handling;
-using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
+using Mockingjay.Common.Handling;
 
 namespace Mockingjay.Common.Behaviours
 {
