@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Mockingjay;
 using Mockingjay.Common.Handling;
-using Mockingjay.Entities;
-using Mockingjay.Features.GetEndpoint;
+using Mockingjay.Features;
 using System.Threading.Tasks;
 
 namespace MockingjayApp.Middleware
@@ -21,18 +20,27 @@ namespace MockingjayApp.Middleware
             Guard.NotNull(context, nameof(context));
             Guard.NotNull(next, nameof(next));
 
-            var endpointInfo = await _commandProcessor.SendAsync<GetEndpointCommand, EndpointInformation>(
-                new GetEndpointCommand
+            var endpointInfo = await _commandProcessor.SendAsync<GetByRequestCommand, Mockingjay.Features.Endpoint>(
+                new GetByRequestCommand
                 {
                     Path = context.Request.Path,
                     Method = context.Request.Method,
+                    Query = context.Request.Query
                 });
 
             if (endpointInfo != null)
             {
+                await _commandProcessor.SendAsync(
+                    new SetEndpointStatsCommand {
+                        Id = endpointInfo.Id,
+                    });
                 context.Response.StatusCode = (int)endpointInfo.StatusCode;
                 context.Response.ContentType = endpointInfo.ContentType;
-                await context.Response.WriteAsync(endpointInfo.Response);
+                if(endpointInfo.Content != null)
+                {
+                    await context.Response.WriteAsync(endpointInfo.Content);
+                }
+                
 
                 return;
             }

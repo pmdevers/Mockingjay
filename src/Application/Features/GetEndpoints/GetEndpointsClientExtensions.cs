@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Mockingjay.Features.GetEndpoints
+namespace Mockingjay.Features
 {
     public static class GetEndpointsClientExtensions
     {

@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Mockingjay.Features.GetEndpoints
+namespace Mockingjay.Features
 {
     public class GetEndpointsController : ApiControllerBase
     {

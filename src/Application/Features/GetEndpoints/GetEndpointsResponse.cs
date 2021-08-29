@@ -2,7 +2,7 @@
 using Mockingjay.Entities;
 using System.Collections.Generic;
 
-namespace Mockingjay.Features.GetEndpoints
+namespace Mockingjay.Features
 {
     public class GetEndpointsResponse : PagedResponse<EndpointInformation>
     {

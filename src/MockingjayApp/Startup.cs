@@ -3,9 +3,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 using Mockingjay.Common.Handling;
-using Mockingjay.Features.GetEndpoints;
+using Mockingjay.Features;
+
+using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
+
 
 namespace MockingjayApp
 {
@@ -33,7 +37,14 @@ namespace MockingjayApp
             // example for health checks
             services.AddHealthChecks();
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(x => {
+                x.EnableAnnotations();
+                x.MapType<EndpointId>(() => new OpenApiSchema
+                {
+                    Type = "string",
+                    Example = new OpenApiString(EndpointId.Next().ToString()),
+                });
+            });
             services.AddControllers();
             services.AddMockingjay();
         }

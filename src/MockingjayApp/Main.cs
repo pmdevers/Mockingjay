@@ -1,6 +1,5 @@
 ﻿using Mockingjay.Common.Handling;
-using Mockingjay.Features.AddEndpoint;
-using Mockingjay.Features.GetEndpoints;
+using Mockingjay.Features;
 using MockingjayApp.Dialogs;
 using System;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +23,8 @@ namespace MockingjayApp
 
         private async void Main_Load(object sender, EventArgs e)
         {
-           await ReloadAsync();
+            await ReloadAsync().ConfigureAwait(false);
+            timer1.Start();
         }
 
         private async Task ReloadAsync()
@@ -41,6 +41,7 @@ namespace MockingjayApp
                 item.SubItems.Add(endpoint.Method);
                 item.SubItems.Add(endpoint.Path);
                 item.SubItems.Add(endpoint.ContentType);
+                item.SubItems.Add(endpoint.TotalRequest.ToString());
                 listView1.Items.Add(item);
             }
         }
@@ -54,7 +55,12 @@ namespace MockingjayApp
         {
             var dialog = _services.GetService<AddEndpointDialog>();
             dialog.ShowDialog(this);
-            await ReloadAsync();
+            await ReloadAsync().ConfigureAwait(false);
+        }
+
+        private async void timer1_Tick(object sender, EventArgs e)
+        {
+            await ReloadAsync().ConfigureAwait(false);
         }
     }
 }

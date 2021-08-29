@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System;
 using System.Linq;
 
-namespace Mockingjay.Features.AddEndpoint
+namespace Mockingjay.Features
 {
     public class AddEndpointCommandValidator : AbstractValidator<AddEndpointCommand>
     {

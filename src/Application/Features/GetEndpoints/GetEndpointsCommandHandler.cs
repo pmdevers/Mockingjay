@@ -1,17 +1,16 @@
 ﻿using Mockingjay.Common.Handling;
-using Mockingjay.Common.Repositories;
 using Mockingjay.Entities;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Mockingjay.Features.GetEndpoints
+namespace Mockingjay.Features
 {
     public class GetEndpointsCommandHandler : IRequestHandler<GetEndpointsCommand, GetEndpointsResponse>
     {
-        private readonly IRepository<EndpointInformation> _repository;
+        private readonly IEndpointRepository _repository;
 
-        public GetEndpointsCommandHandler(IRepository<EndpointInformation> repository)
+        public GetEndpointsCommandHandler(IEndpointRepository repository)
         {
             _repository = repository;
         }

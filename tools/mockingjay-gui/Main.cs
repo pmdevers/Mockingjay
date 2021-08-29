@@ -1,6 +1,6 @@
 ﻿using mockingjay.Dialogs;
 using Mockingjay.Common.Http;
-using Mockingjay.Features.GetEndpoints;
+using Mockingjay.Features;
 using System;
 
 using System.Threading.Tasks;

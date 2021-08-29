@@ -1,5 +1,5 @@
 ﻿using Mockingjay.Common.Handling;
-using Mockingjay.Features.AddEndpoint;
+using Mockingjay.Features;
 using System;
 using System.Net;
 using System.Windows.Forms;
@@ -32,7 +32,7 @@ namespace MockingjayApp.Dialogs
                 Method = Method.Items[Method.SelectedIndex].ToString(),
                 Path = Endpoint.Text,
                 ContentType = contentType.Text,
-                Response = content.Text,
+                Content = content.Text,
                 StatusCode = (HttpStatusCode)int.Parse(statusCode.Text)
             });
 

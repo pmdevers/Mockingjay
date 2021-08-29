@@ -2,19 +2,20 @@
 using System.Threading.Tasks;
 
 using Mockingjay.Common.Handling;
-using Mockingjay.Common.Repositories;
+using Mockingjay.Common.Storage;
 using Mockingjay.Entities;
-
 using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
 
-namespace Mockingjay.Features.AddEndpoint
+namespace Mockingjay.Features
 {
     public class AddEndpointCommandHandler : IRequestHandler<AddEndpointCommand, EndpointId>
     {
-        private readonly IRepository<EndpointInformation> _repository;
+        private readonly IEventStore<EndpointId> _eventStore;
+        private readonly IEndpointRepository _repository;
 
-        public AddEndpointCommandHandler(IRepository<EndpointInformation> repository)
+        public AddEndpointCommandHandler(IEventStore<EndpointId> eventStore, IEndpointRepository repository)
         {
+            _eventStore = eventStore;
             _repository = repository;
         }
 
@@ -22,19 +23,27 @@ namespace Mockingjay.Features.AddEndpoint
         {
             Guard.NotNull(command, nameof(command));
 
-            var endpoint = new EndpointInformation
-            {
-                Id = EndpointId.Next(),
-                Path = command.Path,
-                Method = command.Method,
-                StatusCode = command.StatusCode,
-                ContentType = command.ContentType,
-                Response = command.Response,
-            };
+            var e = Endpoint.Create(
+                command.Path,
+                command.Method,
+                command.StatusCode,
+                command.ContentType,
+                command.Content);
 
-            await _repository.SaveAsync(endpoint);
+            await _eventStore.SaveAsync(e.Buffer);
+            await _repository.SaveAsync(Project(e));
 
-            return endpoint.Id;
+            return e.Id;
         }
+
+        private EndpointInformation Project(Endpoint e) => new ()
+        {
+                Id = e.Id,
+                Path = e.Path,
+                Method = e.Method,
+                StatusCode = e.StatusCode,
+                ContentType = e.ContentType,
+                Response = e.Content,
+        };
     }
 }

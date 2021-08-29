@@ -6,16 +6,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
 
-namespace Mockingjay.Features.GetEndpoint
+namespace Mockingjay.Features
 {
-    public class GetEndpointController : ApiControllerBase
+    public class GetEndpointByPathController : ApiControllerBase
     {
         [HttpGet("endpoint")]
         [Produces(typeof(EndpointId))]
         [SwaggerOperation(Tags = new[] { "Endpoints" })]
-        public async Task<IActionResult> GetEndpoint([FromQuery]GetEndpointCommand cmd, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetEndpoint([FromQuery]GetEndpointByPathCommand cmd, CancellationToken cancellationToken)
         {
-            return Ok(await CommandProcessor.SendAsync<GetEndpointCommand, EndpointInformation>(cmd, cancellationToken));
+            return Ok(await CommandProcessor.SendAsync<GetEndpointByPathCommand, EndpointInformation>(cmd, cancellationToken));
         }
     }
 }

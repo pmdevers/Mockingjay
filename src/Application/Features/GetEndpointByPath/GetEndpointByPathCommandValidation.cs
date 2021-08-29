@@ -2,11 +2,11 @@
 using System;
 using System.Linq;
 
-namespace Mockingjay.Features.GetEndpoint
+namespace Mockingjay.Features
 {
-    public class GetEndpointCommandValidation : AbstractValidator<GetEndpointCommand>
+    public class GetEndpointByPathCommandValidation : AbstractValidator<GetEndpointByPathCommand>
     {
-        public GetEndpointCommandValidation()
+        public GetEndpointByPathCommandValidation()
         {
             var allowedMethods = new[] { "GET", "POST", "PUT", "DELETE", "PATCH" };
 

@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MockEndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
 
-namespace Mockingjay.Features.AddEndpoint
+namespace Mockingjay.Features
 {
     public static class AddEndpointClientExtension
     {

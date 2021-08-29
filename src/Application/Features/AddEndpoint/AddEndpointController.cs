@@ -7,7 +7,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
 
-namespace Mockingjay.Features.AddEndpoint
+namespace Mockingjay.Features
 {
     public class AddEndpointController : ApiControllerBase
     {

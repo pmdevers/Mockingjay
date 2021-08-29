@@ -13,5 +13,6 @@ namespace Mockingjay.Entities
         public string ContentType { get; set; }
 
         public string Response { get; set; }
+        public int TotalRequest { get; internal set; }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Mockingjay.Common.Handling;
 using Mockingjay.Entities;
 
-namespace Mockingjay.Features.GetEndpoint
+namespace Mockingjay.Features
 {
-    public class GetEndpointCommand : ICommand<EndpointInformation>
+    public class GetEndpointByPathCommand : ICommand<EndpointInformation>
     {
         public string Path { get; set; }
         public string Method { get; set; }

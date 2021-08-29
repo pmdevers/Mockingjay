@@ -3,10 +3,9 @@ using Infrastructure.Repositories;
 using Infrastructure.Security;
 using Infrastructure.Storage;
 using Mockingjay.Common.Handling;
-using Mockingjay.Common.Repositories;
 using Mockingjay.Common.Security;
 using Mockingjay.Common.Storage;
-using Mockingjay.Entities;
+using Mockingjay.Features;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -20,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddEventStore(this IServiceCollection services)
         {
-            services.AddTransient(typeof(IEventStore<>), typeof(InMemoryEventstore<>));
+            services.AddTransient(typeof(IEventStore<>), typeof(LiteDBEventstore<>));
 
             return services;
         }
@@ -35,7 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddSingleton<IRepository<EndpointInformation>, EndpointInformationRepository>();
+            services.AddSingleton<IEndpointRepository, EndpointInformationRepository>();
             return services;
         }
     }
