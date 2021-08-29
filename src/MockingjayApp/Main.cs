@@ -71,11 +71,22 @@ namespace MockingjayApp
             await ReloadAsync();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private async void timer1_Tick(object sender, EventArgs e)
         {
             txtLog.Text = Program.Messages.ToString();
             txtLog.SelectionStart = txtLog.Text.Length;
             txtLog.ScrollToCaret();
+
+            int selected = 0;
+            if(listView1.SelectedIndices.Count > 0)
+            {
+                selected = listView1.SelectedIndices[0];
+            }
+            
+            await ReloadAsync();
+
+            listView1.SelectedIndices.Add(selected);
+
         }
 
         private async void btnDelete_Click(object sender, EventArgs e)
