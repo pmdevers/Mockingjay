@@ -8,7 +8,7 @@ namespace Mockingjay.Features.GetEndpoints
 {
     public class GetEndpointsController : ApiControllerBase
     {
-        [HttpGet("endpoint/q")]
+        [HttpGet("endpoints")]
         [Produces(typeof(GetEndpointsResponse))]
         [SwaggerOperation(Tags = new[] { "Endpoints" })]
         public async Task<IActionResult> GetEndpoints([FromQuery] GetEndpointsCommand cmd, CancellationToken cancellationToken)

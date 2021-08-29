@@ -28,8 +28,7 @@ namespace mockingjay
 
             using (ServiceProvider serviceProvider = services.BuildServiceProvider())
             {
-                var form1 = serviceProvider.GetRequiredService<Main>();
-                Application.Run(form1);
+                
             }
         }
 

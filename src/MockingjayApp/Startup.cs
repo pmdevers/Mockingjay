@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
 using Mockingjay.Common.Handling;
+using Mockingjay.Features.GetEndpoints;
 
-
-namespace WorkerService
+namespace MockingjayApp
 {
     public class Startup
     {
@@ -19,6 +20,8 @@ namespace WorkerService
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddScoped<GetEndpointsController>();
             services.AddAuthorization();
 
             services.AddCommandHandlers();
@@ -31,7 +34,7 @@ namespace WorkerService
             services.AddHealthChecks();
 
             services.AddSwaggerGen();
-
+            services.AddControllers();
             services.AddMockingjay();
         }
 
@@ -47,7 +50,9 @@ namespace WorkerService
             app.UseRouting();
             app.UseAuthorization();
 
+
             app.UseMockingjay();
+
         }
     }
 }

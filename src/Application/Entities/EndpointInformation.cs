@@ -1,4 +1,5 @@
-﻿using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForMockEndpoint>;
+﻿using System.Net;
+using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
 
 namespace Mockingjay.Entities
 {
@@ -8,7 +9,7 @@ namespace Mockingjay.Entities
         public string Path { get; set; }
         public string Method { get; set; }
 
-        public int StatusCode { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
         public string ContentType { get; set; }
 
         public string Response { get; set; }

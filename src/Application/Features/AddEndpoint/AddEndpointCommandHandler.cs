@@ -5,7 +5,7 @@ using Mockingjay.Common.Handling;
 using Mockingjay.Common.Repositories;
 using Mockingjay.Entities;
 
-using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForMockEndpoint>;
+using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
 
 namespace Mockingjay.Features.AddEndpoint
 {

@@ -8,5 +8,5 @@ using Mockingjay.Common.Identifiers.Behaviors;
 
 namespace Mockingjay.ValueObjects
 {
-    public sealed class ForMockEndpoint : GuidBehavior { }
+    public sealed class ForEndpoint : GuidBehavior { }
 }

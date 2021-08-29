@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 using Mockingjay.Common;
 using Mockingjay.Common.Json;
 
-namespace WorkerService.Middleware
+namespace MockingjayApp.Middleware
 {
     [SuppressMessage(
         "Minor Code Smell",

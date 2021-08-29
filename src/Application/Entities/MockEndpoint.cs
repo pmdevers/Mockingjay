@@ -4,7 +4,7 @@ using Mockingjay.Common.DomainModel;
 
 using Microsoft.AspNetCore.Http;
 
-using MockEndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForMockEndpoint>;
+using MockEndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
 
 namespace Mockingjay.Entities
 {

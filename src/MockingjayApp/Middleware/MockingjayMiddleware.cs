@@ -5,7 +5,7 @@ using Mockingjay.Entities;
 using Mockingjay.Features.GetEndpoint;
 using System.Threading.Tasks;
 
-namespace WorkerService.Middleware
+namespace MockingjayApp.Middleware
 {
     public class MockingjayMiddleware : IMiddleware
     {
@@ -30,7 +30,7 @@ namespace WorkerService.Middleware
 
             if (endpointInfo != null)
             {
-                context.Response.StatusCode = endpointInfo.StatusCode;
+                context.Response.StatusCode = (int)endpointInfo.StatusCode;
                 context.Response.ContentType = endpointInfo.ContentType;
                 await context.Response.WriteAsync(endpointInfo.Response);
 

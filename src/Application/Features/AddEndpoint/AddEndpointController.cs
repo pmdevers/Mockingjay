@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Mockingjay.Common.Http;
 using Swashbuckle.AspNetCore.Annotations;
 
-using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForMockEndpoint>;
+using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
 
 namespace Mockingjay.Features.AddEndpoint
 {

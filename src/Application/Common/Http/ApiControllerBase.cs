@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Mockingjay.Common.Http
 {
-    [Route("api")]
+    [ApiController]
     //[Authorize]
     public class ApiControllerBase : ControllerBase
     {

@@ -6,7 +6,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForMockEndpoint>;
+using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
 
 namespace mockingjay
 {
