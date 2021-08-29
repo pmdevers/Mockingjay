@@ -6,20 +6,14 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
-
 namespace mockingjay
 {
     public partial class Main : Form
     {
-        
         private readonly AddEndpointDialog _endpointDialog;
-        private int _page = 1;
-        private int _itemsPerPage = 50;
 
         public Main(MockingjayClient client, AddEndpointDialog endpointDialog)
         {
-            
             InitializeComponent();
             Client = client;
             _endpointDialog = endpointDialog;
@@ -45,9 +39,9 @@ namespace mockingjay
         private async Task ReloadAsync()
         {
             listView1.Items.Clear();
-            var results = await Client.GetEndpointsAsync(_page, _itemsPerPage);
+            var results = await Client.GetEndpointsAsync();
 
-            foreach (var endpoint in results.Items)
+            foreach (var endpoint in results)
             {
                 var item = new ListViewItem();
 

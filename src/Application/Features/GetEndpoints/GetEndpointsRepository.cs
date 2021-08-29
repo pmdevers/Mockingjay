@@ -7,7 +7,7 @@ namespace Mockingjay.Features
 
     public partial interface IEndpointRepository
     {
-        Task<IEnumerable<EndpointInformation>> GetEndpointsAsync(int page, int itemsPerPage);
+        Task<IEnumerable<EndpointInformation>> GetEndpointsAsync();
         Task<int> CountAsync();
     }
 }

@@ -14,7 +14,7 @@ namespace Mockingjay.Common.DomainModel
 
         public int Version => Buffer.Version;
 
-        public EventBuffer<TId> Buffer { get; protected set; }
+        internal EventBuffer<TId> Buffer { get; private set; }
 
         protected override void AddEventsToBuffer(IEnumerable<object> events)
             => Buffer = Buffer.Add(events);

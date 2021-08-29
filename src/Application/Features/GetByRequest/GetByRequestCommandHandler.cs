@@ -10,7 +10,7 @@ using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForE
 
 namespace Mockingjay.Features
 {
-    public class GetByRequestCommandHandler : IRequestHandler<GetByRequestCommand, Endpoint>
+    public class GetByRequestCommandHandler : IRequestHandler<GetByRequestCommand, GetByRequestResponse>
     {
         private readonly IEndpointRepository _repository;
         private readonly IEventStore<EndpointId> _eventStore;
@@ -25,7 +25,7 @@ namespace Mockingjay.Features
             _eventStore = eventStore;
             _matcher = matcher;
         }
-        public async Task<Endpoint> HandleAsync(GetByRequestCommand command, CancellationToken cancellationToken = default)
+        public async Task<GetByRequestResponse> HandleAsync(GetByRequestCommand command, CancellationToken cancellationToken = default)
         {
             Guard.NotNull(command, nameof(command));
             var items = await _repository.GetByMethodAsync(command.Method);
@@ -36,11 +36,13 @@ namespace Mockingjay.Features
                 var match = _matcher.Match(route.Value, command.Path, command.Query);
                 if (match != null)
                 {
-                    return await _eventStore.Aggregate<Endpoint, EndpointId>(route.Key);
+                    var endpoint = await _eventStore.Aggregate<Endpoint, EndpointId>(route.Key);
+
+                    return new GetByRequestResponse(endpoint, match);
                 }
             }
 
-            return null;
+            return new GetByRequestResponse(null, null);
         }
     }
 }

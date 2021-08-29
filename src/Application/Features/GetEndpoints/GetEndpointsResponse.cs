@@ -1,19 +1,27 @@
-﻿using Mockingjay.Common;
-using Mockingjay.Entities;
+﻿using Mockingjay.Entities;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Mockingjay.Features
 {
-    public class GetEndpointsResponse : PagedResponse<EndpointInformation>
+    public class GetEndpointsResponse : IEnumerable<EndpointInformation>
     {
+        private readonly IEnumerable<EndpointInformation> _items;
+
         public GetEndpointsResponse(
-            IEnumerable<EndpointInformation> items,
-            long currentPage,
-            int resultsPerPage,
-            long totalPages,
-            long totalResults)
-            : base(items, currentPage, resultsPerPage, totalPages, totalResults)
+            IEnumerable<EndpointInformation> items)
         {
+            _items = items;
+        }
+
+        public IEnumerator<EndpointInformation> GetEnumerator()
+        {
+            return _items.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _items.GetEnumerator();
         }
     }
 }

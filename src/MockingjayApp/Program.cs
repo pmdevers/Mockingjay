@@ -2,8 +2,10 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,26 +14,45 @@ namespace MockingjayApp
 {
     static class Program
     {
+        public static StringWriter Messages = new StringWriter();
+
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main(string[] args)
         {
-            var hostBuilder = CreateWebHostBuilder(args).Build();
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.TextWriter(Messages)
+                .CreateLogger();
 
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            try
+            {
+                var webHost = CreateWebHostBuilder(args).Build();
+                webHost.RunAsync();
 
-            var form1 = hostBuilder.Services.GetRequiredService<Main>();
-            hostBuilder.RunAsync();
-            Application.Run(form1);
+                Application.SetHighDpiMode(HighDpiMode.SystemAware);
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
+                var form1 = webHost.Services.GetRequiredService<Main>();
+                Application.Run(form1);
+            } catch(Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
 
         }
 
         public static IHostBuilder CreateWebHostBuilder(string[] args) =>
              Host.CreateDefaultBuilder(args)
+                .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseUrls("http://*:5050");

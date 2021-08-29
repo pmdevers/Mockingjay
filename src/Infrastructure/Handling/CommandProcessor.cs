@@ -34,7 +34,7 @@ namespace Infrastructure.Handling
 
             if (handler is null)
             {
-                throw new InvalidOperationException($"Could not resolve the handler of the type ICommandHandler<{typeof(TCommand)}>.");
+                throw new InvalidOperationException($"Could not resolve the handler of the type IRequestHandler<{typeof(TCommand)}>.");
             }
 
             var pipeline = GetPipeline(scope, command, cancellationToken, () => handler.HandleAsync(command, cancellationToken));

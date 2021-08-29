@@ -25,7 +25,6 @@ namespace MockingjayApp
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddScoped<GetEndpointsController>();
             services.AddAuthorization();
 
             services.AddCommandHandlers();

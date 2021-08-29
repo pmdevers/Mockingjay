@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Mockingjay.Features
 {
-    public class AddEndpointCommandValidator : AbstractValidator<AddEndpointCommand>
+    internal class AddEndpointCommandValidator : AbstractValidator<AddEndpointCommand>
     {
         public AddEndpointCommandValidator(IActionDescriptorCollectionProvider actionDescriptorCollectionProvider)
         {

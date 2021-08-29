@@ -31,6 +31,13 @@ namespace Infrastructure.Repositories
             return Task.FromResult(collection.Count());
         }
 
+        public Task DeleteAsync(EndpointId endpointId)
+        {
+            var collection = _database.GetCollection<EndpointInformation>();
+            collection.Delete(endpointId.ToString());
+            return Task.CompletedTask;
+        }
+
         public void Dispose()
         {
             _database.Dispose();
@@ -57,17 +64,14 @@ namespace Infrastructure.Repositories
             return Task.FromResult(result);
         }
 
-        public Task<IEnumerable<EndpointInformation>> GetEndpointsAsync(int page, int itemsPerPage)
+        public Task<IEnumerable<EndpointInformation>> GetEndpointsAsync()
         {
             var collection = _database.GetCollection<EndpointInformation>();
             var result = collection
                 .Query()
                 .OrderByDescending(x => x.TotalRequest)
-                .Skip(page * (page - 1))
-                .Limit(itemsPerPage)
                 .ToEnumerable();
             return Task.FromResult(result);
-
         }
 
         public Task SaveAsync(EndpointInformation endpoint)

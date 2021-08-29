@@ -2,6 +2,8 @@
 using Mockingjay;
 using Mockingjay.Common.Handling;
 using Mockingjay.Features;
+using Serilog;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MockingjayApp.Middleware
@@ -20,7 +22,7 @@ namespace MockingjayApp.Middleware
             Guard.NotNull(context, nameof(context));
             Guard.NotNull(next, nameof(next));
 
-            var endpointInfo = await _commandProcessor.SendAsync<GetByRequestCommand, Mockingjay.Features.Endpoint>(
+            var response = await _commandProcessor.SendAsync<GetByRequestCommand, GetByRequestResponse>(
                 new GetByRequestCommand
                 {
                     Path = context.Request.Path,
@@ -28,17 +30,28 @@ namespace MockingjayApp.Middleware
                     Query = context.Request.Query
                 });
 
-            if (endpointInfo != null)
+            if (response.Endpoint != null)
             {
+                var endpoint = response.Endpoint;
+
+                Log.Information($"Handling route '{endpoint.Path}'");
+
                 await _commandProcessor.SendAsync(
                     new SetEndpointStatsCommand {
-                        Id = endpointInfo.Id,
+                        Id = endpoint.Id,
                     });
-                context.Response.StatusCode = (int)endpointInfo.StatusCode;
-                context.Response.ContentType = endpointInfo.ContentType;
-                if(endpointInfo.Content != null)
+                context.Response.StatusCode = (int)endpoint.StatusCode;
+                context.Response.ContentType = endpoint.ContentType;
+                if(endpoint.Content != null)
                 {
-                    await context.Response.WriteAsync(endpointInfo.Content);
+                    var content = endpoint.Content;
+                    foreach (var item in response.RouteValues)
+                    {
+                        var tag = "{" + item.Key + "}";
+                        content = content.Replace(tag, item.Value.ToString(), System.StringComparison.InvariantCultureIgnoreCase);
+                    }
+
+                    await context.Response.WriteAsync(content);
                 }
                 
 
