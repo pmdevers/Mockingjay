@@ -1,4 +1,5 @@
-﻿using Mockingjay.Common.Repositories;
+﻿using LiteDB;
+using Mockingjay.Common.Repositories;
 using Mockingjay.Entities;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,27 +12,50 @@ namespace Infrastructure.Repositories
     public class EndpointInformationRepository : IRepository<EndpointInformation>
     {
         private readonly List<EndpointInformation> _entities = new List<EndpointInformation>();
+        private readonly LiteDatabase _database;
 
-        public IQueryable<EndpointInformation> AsQueryable()
+        public EndpointInformationRepository()
         {
-            return _entities.AsQueryable();
+            _database = new LiteDatabase("Mockingjay.db");
+            BsonMapper.Global.RegisterType<EndpointId>(
+                serialize: (endpointId) => endpointId.ToString(),
+                deserialize: (bson) => EndpointId.Parse(bson.AsString)
+            );
+        }
+
+        public Task<int> CountAsync()
+        {
+            return Task.FromResult(GetCollection().Count());
         }
 
         public Task DeleteAsync(EndpointInformation entity)
         {
-            _entities.Remove(entity);
+            GetCollection().Delete(entity.Id.ToString());
             return Task.CompletedTask;
         }
 
         public Task<EndpointInformation> FindByIdAsync(string id)
         {
-            return Task.FromResult(_entities.FirstOrDefault(x => x.Id == EndpointId.Parse(id)));
+            return Task.FromResult(GetCollection().FindOne(id));
+        }
+
+        public Task<IEnumerable<EndpointInformation>> PagedAsync(int page, int itemsPerPage)
+        {
+            var result = GetCollection()
+                .Query()
+                .Skip(page * (page - 1))
+                .Limit(itemsPerPage)
+                .ToEnumerable();
+            return Task.FromResult(result);
         }
 
         public Task SaveAsync(EndpointInformation entity)
         {
-            _entities.Add(entity);
+            GetCollection().Insert(entity);
             return Task.CompletedTask;
         }
+
+        private ILiteCollection<EndpointInformation> GetCollection() =>
+            _database.GetCollection<EndpointInformation>();
     }
 }

@@ -10,8 +10,8 @@ namespace Mockingjay.Features.GetEndpoint
         public static async Task<EndpointInformation> GetEndpointByRequestAsync(this IRepository<EndpointInformation> repository, string path, string method)
         {
             Guard.NotNull(repository, nameof(repository));
-            var result = repository.AsQueryable().FirstOrDefault(x => x.Path == path && x.Method == method);
-            return await Task.FromResult(result);
+            //var result = repository.AsQueryable().FirstOrDefault(x => x.Path == path && x.Method == method);
+            return await Task.FromResult(new EndpointInformation());
         }
     }
 }

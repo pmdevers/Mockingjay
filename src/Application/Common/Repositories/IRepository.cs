@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Mockingjay.Common.Repositories
@@ -9,6 +9,7 @@ namespace Mockingjay.Common.Repositories
         Task SaveAsync(T entity);
         Task DeleteAsync(T entity);
 
-        IQueryable<T> AsQueryable();
+        Task<int> CountAsync();
+        Task<IEnumerable<T>> PagedAsync(int page, int itemsPerPage);
     }
 }
