@@ -6,7 +6,7 @@ namespace Mockingjay.Features
     {
         public bool Deleted { get; internal set; }
 
-        public void Delete()
+        internal void Delete()
         {
             ApplyEvent(new EndpointDelted());
         }

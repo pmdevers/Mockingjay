@@ -11,11 +11,11 @@ namespace Mockingjay.Features
     public class GetEndpointByIdController : ApiControllerBase
     {
         [HttpGet("endpoint/{endpointId}")]
-        [Produces(typeof(EndpointInformation))]
+        [Produces(typeof(Endpoint))]
         [SwaggerOperation(Tags = new[] { "Endpoints" })]
         public async Task<IActionResult> GetEndpoint([FromRoute] GetEndpointByIdCommand cmd, CancellationToken cancellationToken)
         {
-            return Ok(await CommandProcessor.SendAsync<GetEndpointByIdCommand, EndpointInformation>(cmd, cancellationToken));
+            return Ok(await CommandProcessor.SendAsync<GetEndpointByIdCommand, Endpoint>(cmd, cancellationToken));
         }
     }
 }

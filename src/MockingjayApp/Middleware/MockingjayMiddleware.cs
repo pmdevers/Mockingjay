@@ -3,8 +3,9 @@ using Mockingjay;
 using Mockingjay.Common.Handling;
 using Mockingjay.Features;
 using Serilog;
-using System.Text.Json;
 using System.Threading.Tasks;
+
+using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
 
 namespace MockingjayApp.Middleware
 {
@@ -27,7 +28,7 @@ namespace MockingjayApp.Middleware
                 {
                     Path = context.Request.Path,
                     Method = context.Request.Method,
-                    Query = context.Request.Query
+                    Query = context.Request.Query,
                 });
 
             if (response.Endpoint != null)
@@ -37,12 +38,14 @@ namespace MockingjayApp.Middleware
                 Log.Information($"Handling route '{endpoint.Path}'");
 
                 await _commandProcessor.SendAsync(
-                    new SetEndpointStatsCommand {
+                    new SetEndpointStatsCommand
+                    {
                         Id = endpoint.Id,
                     });
                 context.Response.StatusCode = (int)endpoint.StatusCode;
                 context.Response.ContentType = endpoint.ContentType;
-                if(endpoint.Content != null)
+
+                if (endpoint.Content != null)
                 {
                     var content = endpoint.Content;
                     foreach (var item in response.RouteValues)
@@ -53,10 +56,18 @@ namespace MockingjayApp.Middleware
 
                     await context.Response.WriteAsync(content);
                 }
-                
 
                 return;
             }
+
+            await _commandProcessor.SendAsync<AddEndpointCommand, EndpointId>(new AddEndpointCommand
+            {
+                Path = context.Request.Path,
+                Method = context.Request.Method,
+                ContentType = context.Request.ContentType,
+                StatusCode = System.Net.HttpStatusCode.NotFound,
+                Content = "Mockingjay endpoint not found.",
+            });
 
             await next.Invoke(context);
         }

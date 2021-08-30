@@ -5,11 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using Mockingjay.Common.Handling;
-using Mockingjay.Features;
 
 using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
-
 
 namespace MockingjayApp
 {
@@ -24,7 +21,6 @@ namespace MockingjayApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddAuthorization();
 
             services.AddCommandHandlers();
@@ -36,7 +32,8 @@ namespace MockingjayApp
             // example for health checks
             services.AddHealthChecks();
 
-            services.AddSwaggerGen(x => {
+            services.AddSwaggerGen(x =>
+            {
                 x.EnableAnnotations();
                 x.MapType<EndpointId>(() => new OpenApiSchema
                 {
@@ -60,9 +57,7 @@ namespace MockingjayApp
             app.UseRouting();
             app.UseAuthorization();
 
-
             app.UseMockingjay();
-
         }
     }
 }

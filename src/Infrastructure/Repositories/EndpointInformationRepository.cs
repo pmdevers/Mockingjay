@@ -12,13 +12,8 @@ namespace Infrastructure.Repositories
     {
         private readonly LiteDatabase _database;
 
-        public EndpointInformationRepository()
+        public EndpointInformationRepository(ConnectionString connectionString)
         {
-            var connectionString = new ConnectionString(@"Mockingjay.db")
-            {
-                Password = "1234",
-                Connection = ConnectionType.Shared,
-            };
             _database = new LiteDatabase(connectionString);
             BsonMapper.Global.RegisterType(
                 serialize: (endpointId) => endpointId.ToString(),

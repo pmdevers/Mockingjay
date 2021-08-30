@@ -13,7 +13,7 @@ namespace Mockingjay.Common.Http
         public MockingjayClient(HttpClient httpClient, IOptions<JsonSerializerOptions> jsonOptions)
         {
             HttpClient = httpClient;
-            Options = jsonOptions.Value;
+            Options = jsonOptions?.Value ?? new JsonSerializerOptions();
         }
 
         internal HttpClient HttpClient { get; }

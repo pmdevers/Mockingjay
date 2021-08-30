@@ -1,31 +1,25 @@
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MockingjayApp
 {
-    static class Program
+    public static class Program
     {
-        public static StringWriter Messages = new StringWriter();
-
+        public static MockingjayLoggerSink Messages { get; set; } = new MockingjayLoggerSink();
 
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
-                .WriteTo.TextWriter(Messages)
+                .WriteTo.Sink(Messages)
                 .CreateLogger();
 
             try
@@ -39,7 +33,8 @@ namespace MockingjayApp
 
                 var form1 = webHost.Services.GetRequiredService<Main>();
                 Application.Run(form1);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Log.Fatal(ex, "Host terminated unexpectedly");
             }
@@ -47,7 +42,6 @@ namespace MockingjayApp
             {
                 Log.CloseAndFlush();
             }
-
         }
 
         public static IHostBuilder CreateWebHostBuilder(string[] args) =>

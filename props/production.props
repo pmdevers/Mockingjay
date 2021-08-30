@@ -2,7 +2,10 @@
 <Project>
 
   <PropertyGroup>
-    <CodeAnalysisRuleSet>..\..\rules\production.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(SolutionDir)rules\production.ruleset</CodeAnalysisRuleSet>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)shared\mockingjay.pfx</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +21,7 @@
   
   <ItemGroup>
     <!-- Shared assembly tags. -->
-    <Compile Include="$(SolutionDir)\shared\AssemblyInfo.shared.cs" Link="Properties\AssemblyInfo.shared.cs" />
-	<!-- <Compile Include="$(SolutionDir)\shared\Guard.cs" Link="Guard.cs" /> -->
+    <Compile Include="$(SolutionDir)shared\AssemblyInfo.shared.cs" Link="Properties\AssemblyInfo.shared.cs" />
+	<!-- <Compile Include="$(SolutionDir)shared\Guard.cs" Link="Guard.cs" /> -->
   </ItemGroup>
 </Project>

@@ -39,7 +39,7 @@ namespace Mockingjay.Common.Http
             return matcher.TryMatch(requestPath, values) ? values : null;
         }
 
-        private RouteValueDictionary GetDefaults(RouteTemplate parsedTemplate)
+        private static RouteValueDictionary GetDefaults(RouteTemplate parsedTemplate)
         {
             var result = new RouteValueDictionary();
 

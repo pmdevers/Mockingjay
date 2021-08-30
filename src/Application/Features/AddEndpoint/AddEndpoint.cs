@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using Microsoft.AspNetCore.Http;
+﻿using System.Net;
 using Mockingjay.Common.DomainModel;
 using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
 
@@ -21,8 +17,7 @@ namespace Mockingjay.Features
         public string ContentType { get; internal set; }
         public string Content { get; internal set; }
 
-
-        public static Endpoint Create(string path, string method, HttpStatusCode statusCode, string contentType, string content)
+        internal static Endpoint Create(string path, string method, HttpStatusCode statusCode, string contentType, string content)
         {
             var endpoint = new Endpoint();
             return endpoint.ApplyEvent(new EndpointCreated(endpoint.Id, path, method, statusCode, contentType, content));

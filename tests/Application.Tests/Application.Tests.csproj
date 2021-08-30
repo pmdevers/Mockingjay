@@ -1,10 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="..\..\props\production.props" />
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="$(SolutionDir)shared\AssemblyInfo.shared.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />

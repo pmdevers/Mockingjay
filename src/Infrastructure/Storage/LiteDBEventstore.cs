@@ -1,39 +1,28 @@
 ﻿using LiteDB;
-using Microsoft.Extensions.Options;
 using Mockingjay;
 using Mockingjay.Common.DomainModel;
 using Mockingjay.Common.Security;
 using Mockingjay.Common.Storage;
 using System;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
 
 namespace Infrastructure.Storage
 {
-    public class LiteDBEventstore<TId> : IEventStore<TId>, IDisposable
+    public class LiteDBEventstore<TId> : IEventStore<TId>
     {
         private readonly LiteDatabase _database;
         private readonly IUserService _userService;
-        private readonly JsonSerializerOptions _options;
 
-        public LiteDBEventstore(IUserService userService, IOptions<JsonSerializerOptions> options)
+        public LiteDBEventstore(IUserService userService, ConnectionString connectionString)
         {
-            var connectionString = new ConnectionString(@"Mockingjay.db")
-            {
-                Password = "1234",
-                Connection = ConnectionType.Shared,
-            };
-            _options = options.Value;
             _database = new LiteDatabase(connectionString);
             _userService = userService;
-            
+
             BsonMapper.Global.RegisterType(
                 serialize: (endpointId) => endpointId.ToString(),
-                deserialize: (bson) => EndpointId.Parse(bson.AsString)
-            );
+                deserialize: (bson) => EndpointId.Parse(bson.AsString));
         }
 
         public Task SaveAsync(EventBuffer<TId> buffer)
@@ -54,7 +43,11 @@ namespace Infrastructure.Storage
         {
             var collection = _database.GetCollection<EventDocument>("events");
             collection.EnsureIndex(x => x.AggregateId);
-            var results = collection.Find(x => x.AggregateId == aggregateId.ToString());
+            var results = collection.Query()
+                .Where(x => x.AggregateId == aggregateId.ToString())
+                .OrderBy(x => x.Version)
+                .ToEnumerable();
+
             return Task.FromResult(EventBuffer<TId>.FromStorage(aggregateId, 0, results, FromEventDocument));
         }
 
@@ -70,11 +63,6 @@ namespace Infrastructure.Storage
             };
         }
 
-        private object FromEventDocument(EventDocument storedEvent) => storedEvent.PayLoad;
-
-        public void Dispose()
-        {
-            _database.Dispose();
-        }
+        private static object FromEventDocument(EventDocument storedEvent) => storedEvent.PayLoad;
     }
 }

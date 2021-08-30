@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using FluentValidation;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 using Mockingjay.Common;
 using Mockingjay.Common.Json;
 

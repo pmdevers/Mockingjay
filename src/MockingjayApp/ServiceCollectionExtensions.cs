@@ -11,7 +11,6 @@ namespace MockingjayApp
 {
     public static class ServiceCollectionExtensions
     {
-
         public static IServiceCollection AddMockingjay(this IServiceCollection services)
         {
             var assembly = typeof(Main).Assembly;

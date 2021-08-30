@@ -1,24 +1,26 @@
 ﻿using Mockingjay.Common.Handling;
-using Mockingjay.Entities;
+using Mockingjay.Common.Storage;
 
 using System.Threading;
 using System.Threading.Tasks;
 
+using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
+
 namespace Mockingjay.Features
 {
-    public class GetEndpointByIdCommandHandler : IRequestHandler<GetEndpointByIdCommand, EndpointInformation>
+    public class GetEndpointByIdCommandHandler : IRequestHandler<GetEndpointByIdCommand, Endpoint>
     {
-        private readonly IEndpointRepository _repository;
+        private readonly IEventStore<EndpointId> _store;
 
-        public GetEndpointByIdCommandHandler(IEndpointRepository repository)
+        public GetEndpointByIdCommandHandler(IEventStore<EndpointId> store)
         {
-            _repository = repository;
+            _store = store;
         }
 
-        public async Task<EndpointInformation> HandleAsync(GetEndpointByIdCommand command, CancellationToken cancellationToken = default)
+        public async Task<Endpoint> HandleAsync(GetEndpointByIdCommand command, CancellationToken cancellationToken = default)
         {
             Guard.NotNull(command, nameof(command));
-            var result = await _repository.GetByIdAsync(command.EndpointId);
+            var result = await _store.Aggregate<Endpoint, EndpointId>(command.EndpointId);
             return result;
         }
     }
