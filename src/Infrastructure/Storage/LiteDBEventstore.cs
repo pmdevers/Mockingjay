@@ -10,17 +10,15 @@ using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForE
 
 namespace Infrastructure.Storage
 {
-    public class LiteDBEventstore<TId> : IEventStore<TId>, IDisposable
+    public class LiteDBEventstore<TId> : IEventStore<TId>
     {
-        private readonly LiteDatabase _database;
         private readonly IUserService _userService;
-        private bool _disposedValue;
+        private readonly ConnectionString _connectionString;
 
         public LiteDBEventstore(IUserService userService, ConnectionString connectionString)
         {
-            _database = new LiteDatabase(connectionString);
             _userService = userService;
-
+            _connectionString = connectionString;
             BsonMapper.Global.RegisterType(
                 serialize: (endpointId) => endpointId.ToString(),
                 deserialize: (bson) => EndpointId.Parse(bson.AsString));
@@ -30,7 +28,9 @@ namespace Infrastructure.Storage
         {
             Guard.NotNull(buffer, nameof(buffer));
 
-            var collection = _database.GetCollection<EventDocument>("events");
+            using var database = new LiteDatabase(_connectionString);
+
+            var collection = database.GetCollection<EventDocument>("events");
             collection.EnsureIndex(x => x.AggregateId);
 
             var documents = buffer.SelectUncommitted(AsEventDocument);
@@ -42,7 +42,9 @@ namespace Infrastructure.Storage
 
         public Task<EventBuffer<TId>> LoadAsync(TId aggregateId)
         {
-            var collection = _database.GetCollection<EventDocument>("events");
+            using var database = new LiteDatabase(_connectionString);
+
+            var collection = database.GetCollection<EventDocument>("events");
             collection.EnsureIndex(x => x.AggregateId);
             var results = collection.Query()
                 .Where(x => x.AggregateId == aggregateId.ToString())
@@ -65,25 +67,5 @@ namespace Infrastructure.Storage
         }
 
         private static object FromEventDocument(EventDocument storedEvent) => storedEvent.PayLoad;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposedValue)
-            {
-                if (disposing)
-                {
-                    _database.Dispose();
-                }
-
-                _disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
     }
 }

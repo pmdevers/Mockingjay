@@ -1,11 +1,9 @@
-﻿using Mockingjay.Common.Handling;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MockingjayApp
+namespace Mockingjay.Common.Handling
 {
     public static class SyncCommandProcessor
     {

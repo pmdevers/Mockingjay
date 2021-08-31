@@ -8,97 +8,85 @@ using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForE
 
 namespace Infrastructure.Repositories
 {
-    public class EndpointInformationRepository : IEndpointRepository, IDisposable
+    public class EndpointInformationRepository : IEndpointRepository
     {
-        private readonly LiteDatabase _database;
-        private bool _disposedValue;
+        private readonly ConnectionString _connectionString;
 
         public EndpointInformationRepository(ConnectionString connectionString)
         {
-            _database = new LiteDatabase(connectionString);
             BsonMapper.Global.RegisterType(
                 serialize: (endpointId) => endpointId.ToString(),
                 deserialize: (bson) => EndpointId.Parse(bson.AsString));
+            _connectionString = connectionString;
         }
 
-        public Task<int> CountAsync()
+        public async Task<int> CountAsync()
         {
-            var collection = _database.GetCollection<EndpointInformation>();
-            return Task.FromResult(collection.Count());
+            using var database = new LiteDatabase(_connectionString);
+            var collection = database.GetCollection<EndpointInformation>();
+            return await Task.FromResult(collection.Count());
         }
 
-        public Task DeleteAsync(EndpointId endpointId)
+        public async Task DeleteAsync(EndpointId endpointId)
         {
-            var collection = _database.GetCollection<EndpointInformation>();
+            using var database = new LiteDatabase(_connectionString);
+            var collection = database.GetCollection<EndpointInformation>();
             collection.Delete(endpointId.ToString());
-            return Task.CompletedTask;
+            await Task.CompletedTask;
         }
         public async Task<EndpointInformation> GetByIdAsync(EndpointId endpointId)
         {
-            var collection = _database.GetCollection<EndpointInformation>();
+            using var database = new LiteDatabase(_connectionString);
+            var collection = database.GetCollection<EndpointInformation>();
             var result = collection.FindOne(x => x.Id == endpointId);
             return await Task.FromResult(result);
         }
 
-        public Task<IEnumerable<EndpointInformation>> GetByMethodAsync(string method)
+        public async Task<IEnumerable<EndpointInformation>> GetByMethodAsync(string method)
         {
-            var collection = _database.GetCollection<EndpointInformation>();
+            using var database = new LiteDatabase(_connectionString);
+            var collection = database.GetCollection<EndpointInformation>();
             var result = collection.Find(x => x.Method == method);
-            return Task.FromResult(result);
+            return await Task.FromResult(result);
         }
 
-        public Task<EndpointInformation> GetByRequestAsync(string path, string method)
+        public async Task<EndpointInformation> GetByRequestAsync(string path, string method)
         {
-            var collection = _database.GetCollection<EndpointInformation>();
+            using var database = new LiteDatabase(_connectionString);
+            var collection = database.GetCollection<EndpointInformation>();
             var result = collection.FindOne(x => x.Path == path && x.Method == method);
-            return Task.FromResult(result);
+            return await Task.FromResult(result);
         }
 
-        public Task<IEnumerable<EndpointInformation>> GetEndpointsAsync()
+        public async Task<IEnumerable<EndpointInformation>> GetEndpointsAsync()
         {
-            var collection = _database.GetCollection<EndpointInformation>();
+            using var database = new LiteDatabase(_connectionString);
+            var collection = database.GetCollection<EndpointInformation>();
             var result = collection
                 .Query()
                 .OrderByDescending(x => x.TotalRequest)
                 .ToEnumerable();
-            return Task.FromResult(result);
+            return await Task.FromResult(result);
         }
 
-        public Task ResetRequestsAsync()
+        public async Task ResetRequestsAsync()
         {
-            var collection = _database.GetCollection<EndpointInformation>();
+            using var database = new LiteDatabase(_connectionString);
+            var collection = database.GetCollection<EndpointInformation>();
 
             collection.UpdateMany(
                 x => new EndpointInformation { TotalRequest = 0 },
                 x => true);
 
-            return Task.CompletedTask;
+            await Task.CompletedTask;
         }
 
-        public Task SaveAsync(EndpointInformation endpoint)
+        public async Task SaveAsync(EndpointInformation endpoint)
         {
-            var collection = _database.GetCollection<EndpointInformation>();
+            using var database = new LiteDatabase(_connectionString);
+            var collection = database.GetCollection<EndpointInformation>();
             collection.Upsert(endpoint);
-            return Task.CompletedTask;
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposedValue)
-            {
-                if (disposing)
-                {
-                    _database.Dispose();
-                }
-                _disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
+            await Task.CompletedTask;
         }
     }
 }
