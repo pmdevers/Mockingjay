@@ -31,7 +31,7 @@ namespace MockingjayApp.Dialogs
         private async void button1_Click(object sender, EventArgs e)
         {
             EndpointId = EndpointId == EndpointId.Empty
-                ? await _processor.SendAsync<AddEndpointCommand, EndpointId>(new AddEndpointCommand
+                ? await _processor.SendAsync<CreateEndpointCommand, EndpointId>(new CreateEndpointCommand
                 {
                     Method = Method.Items[Method.SelectedIndex].ToString(),
                     Path = Endpoint.Text,

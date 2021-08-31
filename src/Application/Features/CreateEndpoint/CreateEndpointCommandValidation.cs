@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Mockingjay.Features
 {
-    internal class AddEndpointCommandValidator : AbstractValidator<AddEndpointCommand>
+    internal class CreateEndpointCommandValidator : AbstractValidator<CreateEndpointCommand>
     {
-        public AddEndpointCommandValidator(IActionDescriptorCollectionProvider actionDescriptorCollectionProvider)
+        public CreateEndpointCommandValidator(IActionDescriptorCollectionProvider actionDescriptorCollectionProvider)
         {
             var routes = actionDescriptorCollectionProvider.ActionDescriptors.Items
                 .Select(x => x.AttributeRouteInfo.Template)

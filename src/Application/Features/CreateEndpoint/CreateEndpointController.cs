@@ -9,16 +9,16 @@ using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForE
 
 namespace Mockingjay.Features
 {
-    public class AddEndpointController : ApiControllerBase
+    public class CreateEndpointController : ApiControllerBase
     {
         [HttpPost("endpoint")]
         [Produces(typeof(EndpointId))]
         [SwaggerOperation(Tags = new[] { "Endpoints" })]
-        public async Task<IActionResult> AddEndpoint(
-            [FromBody] AddEndpointCommand cmd,
+        public async Task<IActionResult> CreateEndpoint(
+            [FromBody] CreateEndpointCommand cmd,
             CancellationToken cancellationToken = default)
         {
-            return Ok(await CommandProcessor.SendAsync<AddEndpointCommand, EndpointId>(cmd, cancellationToken));
+            return Ok(await CommandProcessor.SendAsync<CreateEndpointCommand, EndpointId>(cmd, cancellationToken));
         }
     }
 }

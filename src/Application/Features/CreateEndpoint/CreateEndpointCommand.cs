@@ -4,7 +4,7 @@ using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForE
 
 namespace Mockingjay.Features
 {
-    public class AddEndpointCommand : ICommand<EndpointId>
+    public class CreateEndpointCommand : ICommand<EndpointId>
     {
         public string Path { get; set; }
         public string Method { get; set; }

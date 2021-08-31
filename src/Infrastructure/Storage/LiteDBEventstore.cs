@@ -12,14 +12,13 @@ namespace Infrastructure.Storage
 {
     public class LiteDBEventstore<TId> : IEventStore<TId>
     {
-        private readonly LiteDatabase _database;
         private readonly IUserService _userService;
+        private readonly ConnectionString _connectionString;
 
         public LiteDBEventstore(IUserService userService, ConnectionString connectionString)
         {
-            _database = new LiteDatabase(connectionString);
             _userService = userService;
-
+            _connectionString = connectionString;
             BsonMapper.Global.RegisterType(
                 serialize: (endpointId) => endpointId.ToString(),
                 deserialize: (bson) => EndpointId.Parse(bson.AsString));
@@ -29,7 +28,9 @@ namespace Infrastructure.Storage
         {
             Guard.NotNull(buffer, nameof(buffer));
 
-            var collection = _database.GetCollection<EventDocument>("events");
+            using var database = new LiteDatabase(_connectionString);
+
+            var collection = database.GetCollection<EventDocument>("events");
             collection.EnsureIndex(x => x.AggregateId);
 
             var documents = buffer.SelectUncommitted(AsEventDocument);
@@ -41,7 +42,9 @@ namespace Infrastructure.Storage
 
         public Task<EventBuffer<TId>> LoadAsync(TId aggregateId)
         {
-            var collection = _database.GetCollection<EventDocument>("events");
+            using var database = new LiteDatabase(_connectionString);
+
+            var collection = database.GetCollection<EventDocument>("events");
             collection.EnsureIndex(x => x.AggregateId);
             var results = collection.Query()
                 .Where(x => x.AggregateId == aggregateId.ToString())

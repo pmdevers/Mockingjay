@@ -60,7 +60,7 @@ namespace MockingjayApp.Middleware
                 return;
             }
 
-            await _commandProcessor.SendAsync<AddEndpointCommand, EndpointId>(new AddEndpointCommand
+            await _commandProcessor.SendAsync<CreateEndpointCommand, EndpointId>(new CreateEndpointCommand
             {
                 Path = context.Request.Path,
                 Method = context.Request.Method,

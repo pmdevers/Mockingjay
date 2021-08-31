@@ -8,18 +8,18 @@ using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForE
 
 namespace Mockingjay.Features
 {
-    public class AddEndpointCommandHandler : IRequestHandler<AddEndpointCommand, EndpointId>
+    public class CreateEndpointCommandHandler : IRequestHandler<CreateEndpointCommand, EndpointId>
     {
         private readonly IEventStore<EndpointId> _eventStore;
         private readonly IEndpointRepository _repository;
 
-        public AddEndpointCommandHandler(IEventStore<EndpointId> eventStore, IEndpointRepository repository)
+        public CreateEndpointCommandHandler(IEventStore<EndpointId> eventStore, IEndpointRepository repository)
         {
             _eventStore = eventStore;
             _repository = repository;
         }
 
-        public async Task<EndpointId> HandleAsync(AddEndpointCommand command, CancellationToken cancellationToken = default)
+        public async Task<EndpointId> HandleAsync(CreateEndpointCommand command, CancellationToken cancellationToken = default)
         {
             Guard.NotNull(command, nameof(command));
 
