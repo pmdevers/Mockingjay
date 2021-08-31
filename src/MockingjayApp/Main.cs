@@ -155,5 +155,24 @@ namespace MockingjayApp
                 MessageBox.Show(other.Message);
             }
         }
+
+        private async void importToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var fileDialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Title = "Select a file to import",
+                FileName = "Select a text file",
+                Filter = "Mockingjaty dabafiles (*.db)|*.db",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            };
+
+            if (fileDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                timer1.Stop();
+                await _processor.SendAsync(new ImportEndpointsCommand { Filename = fileDialog.FileName });
+                timer1.Start();
+            }
+        }
     }
 }

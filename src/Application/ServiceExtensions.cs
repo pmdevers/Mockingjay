@@ -2,6 +2,7 @@
 using Mockingjay.Common.Behaviours;
 using Mockingjay.Common.Handling;
 using Mockingjay.Common.Http;
+using Mockingjay.Common.Storage;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -16,7 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
-            
+
             return services;
         }
     }
