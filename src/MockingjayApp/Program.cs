@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MockingjayApp

@@ -33,11 +33,11 @@ namespace Infrastructure.Repositories
             collection.Delete(endpointId.ToString());
             return Task.CompletedTask;
         }
-        public Task<EndpointInformation> GetByIdAsync(EndpointId endpointId)
+        public async Task<EndpointInformation> GetByIdAsync(EndpointId endpointId)
         {
             var collection = _database.GetCollection<EndpointInformation>();
             var result = collection.FindOne(x => x.Id == endpointId);
-            return Task.FromResult(result);
+            return await Task.FromResult(result);
         }
 
         public Task<IEnumerable<EndpointInformation>> GetByMethodAsync(string method)

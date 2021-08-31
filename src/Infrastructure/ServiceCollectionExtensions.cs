@@ -21,7 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddEventStore(this IServiceCollection services)
         {
-            services.AddTransient(typeof(IEventStore<>), typeof(LiteDBEventstore<>));
+            services.AddSingleton(typeof(IEventStore<>), typeof(LiteDBEventstore<>));
             services.AddSingleton(x =>
             {
                 Directory.CreateDirectory(EndpointDatafile.Directory);

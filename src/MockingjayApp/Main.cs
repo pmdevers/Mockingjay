@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -37,17 +36,16 @@ namespace MockingjayApp
             _writer.WriteLine(log.Log.RenderMessage());
         }
 
-        private async void Main_Load(object sender, EventArgs e)
+        private void Main_Load(object sender, EventArgs e)
         {
-            await ReloadAsync();
+            Reload();
             timer1.Start();
         }
 
-        private async Task ReloadAsync()
+        private void Reload()
         {
             listView1.Items.Clear();
-            var command = new GetEndpointsCommand();
-            var results = await _processor.SendAsync<GetEndpointsCommand, GetEndpointsResponse>(command);
+            var results = _processor.Send<GetEndpointsCommand, GetEndpointsResponse>(new GetEndpointsCommand());
 
             foreach (var endpoint in results)
             {
@@ -75,27 +73,40 @@ namespace MockingjayApp
             btnEdit.Visible = listView1.SelectedIndices.Count > 0;
         }
 
-        private async void toolStripButton1_Click(object sender, EventArgs e)
+        private void toolStripButton1_Click(object sender, EventArgs e)
         {
             var dialog = _services.GetService<AddEndpointDialog>();
             dialog.Text = "Add new endpoint";
             dialog.EndpointId = EndpointId.Empty;
             dialog.ShowDialog(this);
-            await ReloadAsync();
+            Reload();
         }
 
-        private async void timer1_Tick(object sender, EventArgs e)
-        {
-            await RefreshUI();
-        }
-
-        private async Task RefreshUI()
+        private void timer1_Tick(object sender, EventArgs e)
         {
             txtLog.Text = _writer.ToString();
             txtLog.SelectionStart = txtLog.Text.Length;
             txtLog.ScrollToCaret();
 
-            await ReloadAsync();
+            listView1.Items.Clear();
+            var results = _processor
+                 .Send<GetEndpointsCommand, GetEndpointsResponse>(
+                        new GetEndpointsCommand());
+
+            foreach (var endpoint in results)
+            {
+                var item = new ListViewItem();
+
+                item.Name = endpoint.Id.ToString();
+                item.Tag = endpoint.Id;
+                item.ImageIndex = 0;
+                item.SubItems.Add(endpoint.Method);
+                item.SubItems.Add(endpoint.Path);
+                item.SubItems.Add(endpoint.ContentType);
+                item.SubItems.Add($"({(int)endpoint.StatusCode}) {endpoint.StatusCode}");
+                item.SubItems.Add(endpoint.TotalRequest.ToString());
+                listView1.Items.Add(item);
+            }
 
             if (listView1.Items.Count > 0 && !_selectedEndpoint.IsEmpty())
             {
@@ -106,13 +117,12 @@ namespace MockingjayApp
                 }
             }
         }
-
-        private async void btnDelete_Click(object sender, EventArgs e)
+        private void btnDelete_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show(this, "Weet je het zeker?", "Delete endpoint", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                await _processor.SendAsync(new DeleteEndpointCommand { EndpointId = _selectedEndpoint });
-                await ReloadAsync();
+                _processor.Send(new DeleteEndpointCommand { EndpointId = _selectedEndpoint });
+                Reload();
             }
         }
 
@@ -122,13 +132,13 @@ namespace MockingjayApp
             txtLog.Text = string.Empty;
         }
 
-        private async void btnEdit_Click(object sender, EventArgs e)
+        private void btnEdit_Click(object sender, EventArgs e)
         {
             var dialog = _services.GetService<AddEndpointDialog>();
             dialog.EndpointId = _selectedEndpoint;
             dialog.Text = "Edit endpoint";
             dialog.ShowDialog(this);
-            await ReloadAsync();
+            Reload();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -154,7 +164,7 @@ namespace MockingjayApp
             }
         }
 
-        private async void importToolStripMenuItem_Click(object sender, EventArgs e)
+        private void importToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var fileDialog = new OpenFileDialog
             {
@@ -168,13 +178,13 @@ namespace MockingjayApp
             if (fileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 timer1.Stop();
-                var bytes = await File.ReadAllBytesAsync(fileDialog.FileName);
-                await _processor.SendAsync(new ImportCommand { Bytes = bytes });
+                var bytes = File.ReadAllBytes(fileDialog.FileName);
+                _processor.Send(new ImportCommand { Bytes = bytes });
                 timer1.Start();
             }
         }
 
-        private async void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var fileDialog = new SaveFileDialog
             {
@@ -186,8 +196,8 @@ namespace MockingjayApp
 
             if (fileDialog.ShowDialog(this) == DialogResult.OK)
             {
-                var data = await _processor.SendAsync<ExportCommand, byte[]>(new ExportCommand());
-                await File.WriteAllBytesAsync(fileDialog.FileName, data);
+                var data = _processor.Send<ExportCommand, byte[]>(new ExportCommand());
+                File.WriteAllBytes(fileDialog.FileName, data);
                 _logger.LogInformation("Datafile exported!");
             }
         }
@@ -197,9 +207,9 @@ namespace MockingjayApp
             Close();
         }
 
-        private async void btnResetRequests_Click(object sender, EventArgs e)
+        private void btnResetRequests_Click(object sender, EventArgs e)
         {
-            await _processor.SendAsync(new ResetRequestsCommand());
+            _processor.Send(new ResetRequestsCommand());
         }
     }
 }
