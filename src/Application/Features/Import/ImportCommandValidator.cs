@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using System.IO;
 
 namespace Mockingjay.Features
 {
@@ -7,7 +6,7 @@ namespace Mockingjay.Features
     {
         public ImportCommandValidator()
         {
-            RuleFor(x => x.Filename).Must(filename => File.Exists(filename));
+            RuleFor(x => x.Bytes).Must(x => x.Length > 0);
         }
     }
 }

@@ -10,10 +10,11 @@ using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForE
 
 namespace Infrastructure.Storage
 {
-    public class LiteDBEventstore<TId> : IEventStore<TId>
+    public class LiteDBEventstore<TId> : IEventStore<TId>, IDisposable
     {
         private readonly LiteDatabase _database;
         private readonly IUserService _userService;
+        private bool _disposedValue;
 
         public LiteDBEventstore(IUserService userService, ConnectionString connectionString)
         {
@@ -64,5 +65,25 @@ namespace Infrastructure.Storage
         }
 
         private static object FromEventDocument(EventDocument storedEvent) => storedEvent.PayLoad;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _database.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

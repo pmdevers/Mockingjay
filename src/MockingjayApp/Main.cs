@@ -67,14 +67,9 @@ namespace MockingjayApp
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView1.SelectedIndices.Count > 0)
-            {
-                _selectedEndpoint = (EndpointId)listView1.Items[listView1.SelectedIndices[0]].Tag;
-            }
-            else
-            {
-                _selectedEndpoint = EndpointId.Empty;
-            }
+            _selectedEndpoint = listView1.SelectedIndices.Count > 0
+                ? (EndpointId)listView1.Items[listView1.SelectedIndices[0]].Tag
+                : EndpointId.Empty;
 
             btnDelete.Visible = listView1.SelectedIndices.Count > 0;
             btnEdit.Visible = listView1.SelectedIndices.Count > 0;
@@ -164,7 +159,7 @@ namespace MockingjayApp
             var fileDialog = new OpenFileDialog
             {
                 Multiselect = false,
-                Title = "Select a file to import",
+                Title = "Import from file.",
                 FileName = EndpointDatafile.Filename,
                 Filter = EndpointDatafile.Filter,
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -173,18 +168,17 @@ namespace MockingjayApp
             if (fileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 timer1.Stop();
-                await _processor.SendAsync(new ImportCommand { Filename = fileDialog.FileName });
-                _logger.LogInformation("Datafile imported!");
+                var bytes = await File.ReadAllBytesAsync(fileDialog.FileName);
+                await _processor.SendAsync(new ImportCommand { Bytes = bytes });
                 timer1.Start();
             }
         }
 
-        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var fileDialog = new OpenFileDialog
+            var fileDialog = new SaveFileDialog
             {
-                Multiselect = false,
-                Title = "Select a file to export",
+                Title = "Export to file",
                 FileName = EndpointDatafile.Filename,
                 Filter = EndpointDatafile.Filter,
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -192,9 +186,20 @@ namespace MockingjayApp
 
             if (fileDialog.ShowDialog(this) == DialogResult.OK)
             {
-                File.Copy(EndpointDatafile.FullPath, fileDialog.FileName, true);
+                var data = await _processor.SendAsync<ExportCommand, byte[]>(new ExportCommand());
+                await File.WriteAllBytesAsync(fileDialog.FileName, data);
                 _logger.LogInformation("Datafile exported!");
             }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private async void btnResetRequests_Click(object sender, EventArgs e)
+        {
+            await _processor.SendAsync(new ResetRequestsCommand());
         }
     }
 }

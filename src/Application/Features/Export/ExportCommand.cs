@@ -2,8 +2,7 @@
 
 namespace Mockingjay.Features
 {
-    public class ImportCommand : ICommand
+    public class ExportCommand : ICommand<byte[]>
     {
-        public byte[] Bytes { get; set; }
     }
 }

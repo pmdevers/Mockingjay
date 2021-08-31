@@ -11,6 +11,7 @@ namespace Infrastructure.Repositories
     public class EndpointInformationRepository : IEndpointRepository, IDisposable
     {
         private readonly LiteDatabase _database;
+        private bool _disposedValue;
 
         public EndpointInformationRepository(ConnectionString connectionString)
         {
@@ -32,12 +33,6 @@ namespace Infrastructure.Repositories
             collection.Delete(endpointId.ToString());
             return Task.CompletedTask;
         }
-
-        public void Dispose()
-        {
-            _database.Dispose();
-        }
-
         public Task<EndpointInformation> GetByIdAsync(EndpointId endpointId)
         {
             var collection = _database.GetCollection<EndpointInformation>();
@@ -69,11 +64,41 @@ namespace Infrastructure.Repositories
             return Task.FromResult(result);
         }
 
+        public Task ResetRequestsAsync()
+        {
+            var collection = _database.GetCollection<EndpointInformation>();
+
+            collection.UpdateMany(
+                x => new EndpointInformation { TotalRequest = 0 },
+                x => true);
+
+            return Task.CompletedTask;
+        }
+
         public Task SaveAsync(EndpointInformation endpoint)
         {
             var collection = _database.GetCollection<EndpointInformation>();
             collection.Upsert(endpoint);
             return Task.CompletedTask;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _database.Dispose();
+                }
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
