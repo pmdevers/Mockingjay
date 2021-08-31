@@ -230,11 +230,7 @@ artifacts
 # TypeScript (only needed for debugging)
 *.js.map
 launchSettings.json
-Abn.Hypotheekdossiers.Api.xml
 appsettings.Local.json
 
-kafka.yaml
-
-strimzi.yaml
-
-services/werkdag-api/src/Application/Application.xml
+[Pp]ublish/
+[Ss]etup/
