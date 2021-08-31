@@ -46,13 +46,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5DEA887F30EC6A50F8FAA76CF90DB15A"
+        "OwnerKey" = "8:_3B76404224254468A89AB46BACF239CD"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_3B76404224254468A89AB46BACF239CD"
+        "OwnerKey" = "8:_5DEA887F30EC6A50F8FAA76CF90DB15A"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -95,7 +95,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\mockingjay-setup.msi"
+        "OutputFilename" = "8:..\\..\\setup\\release\\mockingjay.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -293,7 +293,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Mockingjay"
         "ProductCode" = "8:{5EF0D5BC-D1CF-486E-B453-4EDB4794BF5A}"
-        "PackageCode" = "8:{A68BFBA0-E56B-4298-8DE3-1C288120ED74}"
+        "PackageCode" = "8:{294A60CB-F8C6-4761-8283-6936AC0AE2E3}"
         "UpgradeCode" = "8:{4D6A6430-DB0E-42E2-AD05-81B0F25666CC}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
