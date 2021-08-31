@@ -2,7 +2,7 @@
 
 namespace Mockingjay.Features
 {
-    public class ImportEndpointsCommand : ICommand
+    public class ImportCommand : ICommand
     {
         public string Filename { get; set; }
     }

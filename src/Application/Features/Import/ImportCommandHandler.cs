@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Mockingjay.Features
 {
-    public class ImportEndpointsCommandHandler : IRequestHandler<ImportEndpointsCommand>
+    public class ImportCommandHandler : IRequestHandler<ImportCommand>
     {
-        public Task<Unit> HandleAsync(ImportEndpointsCommand command, CancellationToken cancellationToken = default)
+        public Task<Unit> HandleAsync(ImportCommand command, CancellationToken cancellationToken = default)
         {
             Guard.NotNull(command, nameof(command));
             File.Copy(command.Filename, EndpointDatafile.FullPath, true);

@@ -5,7 +5,9 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Mockingjay.Common.Handling;
+using Mockingjay.Common.Storage;
 using Mockingjay.Features;
 using MockingjayApp.Dialogs;
 using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
@@ -16,15 +18,16 @@ namespace MockingjayApp
     {
         private readonly ICommandProcessor _processor;
         private readonly IServiceProvider _services;
+        private readonly ILogger _logger;
         private StringWriter _writer = new StringWriter();
         private EndpointId _selectedEndpoint;
 
-        public Main(ICommandProcessor processor, IServiceProvider services)
+        public Main(ICommandProcessor processor, IServiceProvider services, ILogger<Main> logger)
         {
             InitializeComponent();
             _processor = processor;
             _services = services;
-
+            _logger = logger;
             Program.Messages.NewLogHandler += Messages_NewLogHandler;
         }
 
@@ -162,16 +165,35 @@ namespace MockingjayApp
             {
                 Multiselect = false,
                 Title = "Select a file to import",
-                FileName = "Select a text file",
-                Filter = "Mockingjaty dabafiles (*.db)|*.db",
+                FileName = EndpointDatafile.Filename,
+                Filter = EndpointDatafile.Filter,
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             };
 
             if (fileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 timer1.Stop();
-                await _processor.SendAsync(new ImportEndpointsCommand { Filename = fileDialog.FileName });
+                await _processor.SendAsync(new ImportCommand { Filename = fileDialog.FileName });
+                _logger.LogInformation("Datafile imported!");
                 timer1.Start();
+            }
+        }
+
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var fileDialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Title = "Select a file to export",
+                FileName = EndpointDatafile.Filename,
+                Filter = EndpointDatafile.Filter,
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            };
+
+            if (fileDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                File.Copy(EndpointDatafile.FullPath, fileDialog.FileName, true);
+                _logger.LogInformation("Datafile exported!");
             }
         }
     }
