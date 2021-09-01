@@ -43,7 +43,8 @@ namespace MockingjayApp
 
         private static IServiceCollection AddForms(this IServiceCollection services, Type type)
         {
-            if (type.IsAssignableTo(typeof(Form))) {
+            if (type.IsAssignableTo(typeof(Form)))
+            {
                 services.AddScoped(type);
             }
 

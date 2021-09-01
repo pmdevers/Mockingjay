@@ -2,7 +2,6 @@
 
 namespace Mockingjay.Common
 {
-
     [Serializable]
     public class NotFoundException : Exception
     {

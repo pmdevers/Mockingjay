@@ -49,7 +49,7 @@ namespace MockingjayApp.Dialogs
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(318, 335);
+            this.button1.Location = new System.Drawing.Point(318, 349);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 7;
@@ -59,7 +59,7 @@ namespace MockingjayApp.Dialogs
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(237, 335);
+            this.button2.Location = new System.Drawing.Point(237, 349);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 8;
@@ -134,7 +134,7 @@ namespace MockingjayApp.Dialogs
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Size = new System.Drawing.Size(385, 233);
+            this.groupBox2.Size = new System.Drawing.Size(385, 247);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Response";
@@ -163,7 +163,7 @@ namespace MockingjayApp.Dialogs
             this.label5.Location = new System.Drawing.Point(191, 25);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(74, 15);
+            this.label5.Size = new System.Drawing.Size(75, 15);
             this.label5.TabIndex = 4;
             this.label5.Text = "ContentType";
             // 
@@ -180,7 +180,7 @@ namespace MockingjayApp.Dialogs
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 43);
+            this.label3.Location = new System.Drawing.Point(3, 61);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(50, 15);
@@ -190,7 +190,7 @@ namespace MockingjayApp.Dialogs
             // content
             // 
             this.content.AcceptsTab = true;
-            this.content.Location = new System.Drawing.Point(4, 61);
+            this.content.Location = new System.Drawing.Point(3, 78);
             this.content.Margin = new System.Windows.Forms.Padding(2);
             this.content.Multiline = true;
             this.content.Name = "content";
@@ -203,7 +203,7 @@ namespace MockingjayApp.Dialogs
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
-            this.ClientSize = new System.Drawing.Size(402, 368);
+            this.ClientSize = new System.Drawing.Size(402, 384);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button2);
