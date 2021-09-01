@@ -13,13 +13,23 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+        {
+            services.AddHandling();
+            services.AddRepositories();
+            services.AddSecurity();
+            services.Storage();
+
+            return services;
+        }
+
         public static IServiceCollection AddHandling(this IServiceCollection services)
         {
             services.AddTransient<ICommandProcessor, CommandProcessor>();
             return services;
         }
 
-        public static IServiceCollection AddEventStore(this IServiceCollection services)
+        public static IServiceCollection Storage(this IServiceCollection services)
         {
             services.AddSingleton(typeof(IEventStore<>), typeof(LiteDBEventstore<>));
             services.AddSingleton(x =>

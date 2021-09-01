@@ -23,11 +23,8 @@ namespace MockingjayApp
         {
             services.AddAuthorization();
 
-            services.AddCommandHandlers();
-            services.AddHandling();
-            services.AddEventStore();
-            services.AddSecurity();
-            services.AddRepositories();
+            services.AddApplication();
+            services.AddInfrastructure();
 
             // example for health checks
             services.AddHealthChecks();

@@ -2,13 +2,12 @@
 using Mockingjay.Common.Behaviours;
 using Mockingjay.Common.Handling;
 using Mockingjay.Common.Http;
-using Mockingjay.Common.Storage;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddCommandHandlers(this IServiceCollection services)
+        public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtensions).Assembly);
             services.AddCommandHandlers(typeof(ServiceCollectionExtensions).Assembly);
