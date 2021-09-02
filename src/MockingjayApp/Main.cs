@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -248,9 +250,17 @@ namespace MockingjayApp
             };
 
             var consumer = new ConsumerBuilder<Ignore, string>(config).Build();
+            var topics = _processor.Send<GetAllTopicsCommand, IEnumerable<Topic>>(new GetAllTopicsCommand());
+            if(!topics.Any())
+            {
+                _kafkaConsumerRunning = false;
+                KafkaLog("No topics to consume.");
+                return;
+            }
+            consumer.Subscribe(topics.Select(x => x.From).Distinct());
 
-            consumer.Subscribe("test.topic");
             KafkaLog("Kafka Consumer started!");
+            KafkaLog(string.Join(", ", topics.Select(x => x.From).Distinct()));
 
             while (_kafkaConsumerRunning)
             {

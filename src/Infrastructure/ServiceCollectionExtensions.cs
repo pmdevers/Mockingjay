@@ -57,6 +57,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddSingleton<IEndpointRepository, EndpointInformationRepository>();
             services.AddSingleton<ISettingsRepository, SettingsRepository>();
+            services.AddSingleton<ITopicRepository, TopicRepository>();
             return services;
         }
     }
