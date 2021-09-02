@@ -13,4 +13,4 @@ using System.Runtime.InteropServices;
 // Classes which are exposed to COM must have a parameterless constructor. That
 [assembly: ComVisible(false)]
 
-[assembly: InternalsVisibleTo("Application.Tests, PublicKey=fb3a2cf6f47b1035")]
+[assembly: InternalsVisibleTo("Mockingjay.Tests, PublicKey=ed53f15ccc5ac568")]

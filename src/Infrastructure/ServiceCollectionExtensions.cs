@@ -56,6 +56,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddSingleton<IEndpointRepository, EndpointInformationRepository>();
+            services.AddSingleton<ISettingsRepository, SettingsRepository>();
             return services;
         }
     }

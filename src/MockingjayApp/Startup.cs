@@ -40,6 +40,8 @@ namespace MockingjayApp
             });
             services.AddControllers();
             services.AddMockingjay();
+
+            //services.AddHostedService<KafkaConsumerWorker>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

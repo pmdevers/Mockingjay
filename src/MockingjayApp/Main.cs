@@ -2,7 +2,10 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using Confluent.Kafka;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Mockingjay.Common.Handling;
@@ -18,15 +21,20 @@ namespace MockingjayApp
         private readonly ICommandProcessor _processor;
         private readonly IServiceProvider _services;
         private readonly ILogger _logger;
+        private readonly Settings _settings;
         private StringWriter _writer = new StringWriter();
         private EndpointId _selectedEndpoint;
+        private Thread _kafkaConsumer;
+        volatile bool _kafkaConsumerRunning = true;
 
-        public Main(ICommandProcessor processor, IServiceProvider services, ILogger<Main> logger)
+        public Main(ICommandProcessor processor, IServiceProvider services, ILogger<Main> logger, Settings settings)
         {
             InitializeComponent();
             _processor = processor;
             _services = services;
             _logger = logger;
+            _settings = settings;
+
             Program.Messages.NewLogHandler += Messages_NewLogHandler;
         }
 
@@ -73,7 +81,7 @@ namespace MockingjayApp
             btnEdit.Visible = listView1.SelectedIndices.Count > 0;
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void btnAddEndpoint_Click(object sender, EventArgs e)
         {
             var dialog = _services.GetService<AddEndpointDialog>();
             dialog.Text = "Add new endpoint";
@@ -117,6 +125,7 @@ namespace MockingjayApp
                 }
             }
         }
+
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show(this, "Weet je het zeker?", "Delete endpoint", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -210,6 +219,79 @@ namespace MockingjayApp
         private void btnResetRequests_Click(object sender, EventArgs e)
         {
             _processor.Send(new ResetRequestsCommand());
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            var settings = _services.GetService<SettingsDialog>();
+            settings.ShowDialog(this);
+        }
+
+        public void KafkaLog(string value)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<string>(KafkaLog), new object[] { value });
+                return;
+            }
+            txtKafkaLog.Text += value + "\r\n";
+        }
+
+        private void UpdateKafka(object obj)
+        {
+            var config = new ConsumerConfig
+            {
+                BootstrapServers = _settings.BootstrapServices,
+                GroupId = _settings.GroupId,
+                AutoOffsetReset = AutoOffsetReset.Earliest,
+                AllowAutoCreateTopics = true,
+            };
+
+            var consumer = new ConsumerBuilder<Ignore, string>(config).Build();
+
+            consumer.Subscribe("test.topic");
+            KafkaLog("Kafka Consumer started!");
+
+            while (_kafkaConsumerRunning)
+            {
+                try
+                {
+                    var result = consumer.Consume(1000);
+                    if(result != null)
+                    {
+                        KafkaLog(result.Message.Value);
+                    }
+                }
+                catch (KafkaException e)
+                {
+                    KafkaLog(e.Error.Reason);
+                    _kafkaConsumerRunning = false;
+                }
+            }
+
+            KafkaLog("Kafka Consumer stoped!");
+
+            consumer.Close();
+        }
+
+        private void btnKafkaStop_Click(object sender, EventArgs e)
+        {
+            _kafkaConsumerRunning = false;
+            kafkaButtons.Items[1].Visible = !(kafkaButtons.Items[0].Visible = true);
+        }
+
+        private void btnKafkaStart_Click(object sender, EventArgs e)
+        {
+            _kafkaConsumer = new Thread(new ParameterizedThreadStart(UpdateKafka));
+            _kafkaConsumerRunning = true;
+            _kafkaConsumer.Start();
+            kafkaButtons.Items[0].Visible = !(kafkaButtons.Items[1].Visible = true);
+        }
+
+        private void txtKafkaLog_TextChanged(object sender, EventArgs e)
+        {
+            txtKafkaLog.SelectionStart = txtKafkaLog.Text.Length;
+            txtKafkaLog.ScrollToCaret();
         }
     }
 }

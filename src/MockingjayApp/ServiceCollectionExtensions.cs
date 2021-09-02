@@ -45,7 +45,7 @@ namespace MockingjayApp
         {
             if (type.IsAssignableTo(typeof(Form)))
             {
-                services.AddScoped(type);
+                services.AddTransient(type);
             }
 
             return services;

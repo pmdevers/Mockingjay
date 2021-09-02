@@ -20,7 +20,7 @@ namespace Mockingjay.Common.Handling
 
     public class Unit
     {
-        public static Task Task => Task.CompletedTask;
+        public static Task<Unit> Task => Task<Unit>.FromResult(Empty);
         public static readonly Unit Empty = new ();
     }
 }
