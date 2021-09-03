@@ -15,6 +15,7 @@ using Mockingjay.Common.Storage;
 using Mockingjay.Features;
 using MockingjayApp.Dialogs;
 using EndpointId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForEndpoint>;
+using TopicId = Mockingjay.Common.Identifiers.Id<Mockingjay.ValueObjects.ForTopic>;
 
 namespace MockingjayApp
 {
@@ -28,6 +29,7 @@ namespace MockingjayApp
         private EndpointId _selectedEndpoint;
         private Thread _kafkaConsumer;
         volatile bool _kafkaConsumerRunning = true;
+        private TopicId _selectedTopic;
 
         public Main(ICommandProcessor processor, IServiceProvider services, ILogger<Main> logger, Settings settings)
         {
@@ -48,11 +50,33 @@ namespace MockingjayApp
 
         private void Main_Load(object sender, EventArgs e)
         {
-            Reload();
+            ReloadEndpoints();
+            ReloadTopics();
             timer1.Start();
         }
 
-        private void Reload()
+        private void ReloadTopics()
+        {
+            listView2.Items.Clear();
+            var results = _processor.Send<GetAllTopicsCommand, IEnumerable<Topic>>(new GetAllTopicsCommand());
+
+            foreach (var topic in results)
+            {
+                var item = new ListViewItem();
+
+                item.Name = topic.Id.ToString();
+                item.Tag = topic.Id;
+                item.ImageIndex = 1;
+                item.SubItems.Add(topic.From);
+                item.SubItems.Add(topic.To);
+                //item.SubItems.Add(topic.TotalRequests);
+                //item.SubItems.Add($"({(int)topic.StatusCode}) {topic.StatusCode}");
+                //item.SubItems.Add(topic.TotalRequest.ToString());
+                listView2.Items.Add(item);
+            }
+        }
+
+        private void ReloadEndpoints()
         {
             listView1.Items.Clear();
             var results = _processor.Send<GetEndpointsCommand, GetEndpointsResponse>(new GetEndpointsCommand());
@@ -89,7 +113,7 @@ namespace MockingjayApp
             dialog.Text = "Add new endpoint";
             dialog.EndpointId = EndpointId.Empty;
             dialog.ShowDialog(this);
-            Reload();
+            ReloadEndpoints();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -133,7 +157,7 @@ namespace MockingjayApp
             if (MessageBox.Show(this, "Weet je het zeker?", "Delete endpoint", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 _processor.Send(new DeleteEndpointCommand { EndpointId = _selectedEndpoint });
-                Reload();
+                ReloadEndpoints();
             }
         }
 
@@ -149,7 +173,7 @@ namespace MockingjayApp
             dialog.EndpointId = _selectedEndpoint;
             dialog.Text = "Edit endpoint";
             dialog.ShowDialog(this);
-            Reload();
+            ReloadEndpoints();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -249,17 +273,26 @@ namespace MockingjayApp
                 AllowAutoCreateTopics = true,
             };
 
+            var producerConfig = new ProducerConfig
+            {
+                BootstrapServers = _settings.BootstrapServices,
+            };
+
             var consumer = new ConsumerBuilder<Ignore, string>(config).Build();
+            var producer = new ProducerBuilder<Ignore, string>(producerConfig)
+                .SetKeySerializer(new StringSerializer())
+                .SetValueSerializer(new StringSerializer())
+                .Build();
             var topics = _processor.Send<GetAllTopicsCommand, IEnumerable<Topic>>(new GetAllTopicsCommand());
             if(!topics.Any())
             {
-                _kafkaConsumerRunning = false;
+                btnKafkaStop_Click(this, EventArgs.Empty);
                 KafkaLog("No topics to consume.");
                 return;
             }
             consumer.Subscribe(topics.Select(x => x.From).Distinct());
 
-            KafkaLog("Kafka Consumer started!");
+            KafkaLog($"Kafka Consumer started! {_settings.BootstrapServices}");
             KafkaLog(string.Join(", ", topics.Select(x => x.From).Distinct()));
 
             while (_kafkaConsumerRunning)
@@ -269,13 +302,20 @@ namespace MockingjayApp
                     var result = consumer.Consume(1000);
                     if(result != null)
                     {
-                        KafkaLog(result.Message.Value);
+                        KafkaLog($"Messge Recieved: From: {result.Topic}");
+
+                        var candidateTopics = topics.Where(x => x.From == result.Topic);
+                        foreach (Topic toTopic in candidateTopics)
+                        {
+                            KafkaLog($"Produce message in: {toTopic.To}");
+                            producer.Produce(toTopic.To, new Message<Ignore, string> { Value = toTopic.Content });
+                        }
                     }
                 }
                 catch (KafkaException e)
                 {
                     KafkaLog(e.Error.Reason);
-                    _kafkaConsumerRunning = false;
+                    btnKafkaStop_Click(this, EventArgs.Empty);
                 }
             }
 
@@ -302,6 +342,36 @@ namespace MockingjayApp
         {
             txtKafkaLog.SelectionStart = txtKafkaLog.Text.Length;
             txtKafkaLog.ScrollToCaret();
+        }
+
+        private void btnAddTopic_Click(object sender, EventArgs e)
+        {
+            var dialog = _services.GetService<AddTopicDialog>();
+            dialog.Text = "Add new topic";
+            dialog.TopicId = TopicId.Empty;
+            dialog.ShowDialog(this);
+            ReloadTopics();
+            btnKafkaStop_Click(sender, e);
+            btnKafkaStart_Click(sender, e);
+        }
+
+        private void listView2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _selectedTopic = listView2.SelectedIndices.Count > 0
+                ? (TopicId)listView2.Items[listView2.SelectedIndices[0]].Tag
+                : TopicId.Empty;
+
+            btnDeleteTopic.Visible = listView2.SelectedIndices.Count > 0;
+            //btnEdit.Visible = listView2.SelectedIndices.Count > 0;
+        }
+
+        private void btnDeleteTopic_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(this, "Weet je het zeker?", "Delete endpoint", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                _processor.Send(new DeleteTopicCommand { TopicId = _selectedTopic });
+                ReloadTopics();
+            }
         }
     }
 }

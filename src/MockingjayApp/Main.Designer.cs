@@ -53,7 +53,6 @@ namespace MockingjayApp
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtLog = new System.Windows.Forms.TextBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
@@ -68,17 +67,24 @@ namespace MockingjayApp
             this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.listView2 = new System.Windows.Forms.ListView();
+            this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader9 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
             this.txtKafkaLog = new System.Windows.Forms.TextBox();
             this.kafkaButtons = new System.Windows.Forms.ToolStrip();
             this.btnKafkaStart = new System.Windows.Forms.ToolStripButton();
             this.btnKafkaStop = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnAddTopic = new System.Windows.Forms.ToolStripButton();
+            this.btnDeleteTopic = new System.Windows.Forms.ToolStripButton();
             this.endpointsContextMenu.SuspendLayout();
             this.logContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.kafkaButtons.SuspendLayout();
@@ -130,6 +136,7 @@ namespace MockingjayApp
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "archery-24x24-1214352.png");
+            this.imageList1.Images.SetKeyName(1, "topic.png");
             // 
             // statusStrip1
             // 
@@ -190,7 +197,7 @@ namespace MockingjayApp
             this.importToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.exportEndpointsToolStripMenuItem.Name = "exportEndpointsToolStripMenuItem";
-            this.exportEndpointsToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.exportEndpointsToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.exportEndpointsToolStripMenuItem.Text = "Endpoints";
             // 
             // importToolStripMenuItem
@@ -212,25 +219,25 @@ namespace MockingjayApp
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(131, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(132, 6);
             // 
             // btnSettings
             // 
             this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(134, 22);
+            this.btnSettings.Size = new System.Drawing.Size(135, 22);
             this.btnSettings.Text = "&Settings";
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(131, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(132, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.ShortcutKeyDisplayString = "Alt+F4";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -247,7 +254,7 @@ namespace MockingjayApp
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.txtLog);
             this.tabPage1.Controls.Add(this.toolStrip1);
             this.tabPage1.Controls.Add(this.listView1);
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
@@ -258,36 +265,23 @@ namespace MockingjayApp
             this.tabPage1.Text = "Http";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.txtLog);
-            this.groupBox1.Location = new System.Drawing.Point(6, 190);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(800, 212);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Logs";
-            // 
             // txtLog
             // 
             this.txtLog.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.txtLog.ContextMenuStrip = this.logContextMenu;
-            this.txtLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtLog.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtLog.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.txtLog.Location = new System.Drawing.Point(3, 19);
+            this.txtLog.Location = new System.Drawing.Point(3, 189);
             this.txtLog.Margin = new System.Windows.Forms.Padding(2);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
-            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtLog.Size = new System.Drawing.Size(794, 190);
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtLog.Size = new System.Drawing.Size(811, 214);
             this.txtLog.TabIndex = 3;
-            this.txtLog.WordWrap = false;
             // 
             // toolStrip1
             // 
-            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton1,
             this.btnDelete,
@@ -296,7 +290,7 @@ namespace MockingjayApp
             this.toolStrip1.Location = new System.Drawing.Point(3, 3);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip1.Size = new System.Drawing.Size(808, 31);
+            this.toolStrip1.Size = new System.Drawing.Size(808, 25);
             this.toolStrip1.TabIndex = 6;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -305,7 +299,7 @@ namespace MockingjayApp
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(108, 28);
+            this.toolStripButton1.Size = new System.Drawing.Size(100, 22);
             this.toolStripButton1.Text = "Add endpoint";
             this.toolStripButton1.Click += new System.EventHandler(this.btnAddEndpoint_Click);
             // 
@@ -314,7 +308,7 @@ namespace MockingjayApp
             this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
             this.btnDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(119, 28);
+            this.btnDelete.Size = new System.Drawing.Size(111, 22);
             this.btnDelete.Text = "Delete endpoint";
             this.btnDelete.Visible = false;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
@@ -324,7 +318,7 @@ namespace MockingjayApp
             this.btnEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnEdit.Image")));
             this.btnEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(106, 28);
+            this.btnEdit.Size = new System.Drawing.Size(98, 22);
             this.btnEdit.Text = "Edit endpoint";
             this.btnEdit.Visible = false;
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
@@ -334,7 +328,7 @@ namespace MockingjayApp
             this.btnResetRequests.Image = ((System.Drawing.Image)(resources.GetObject("btnResetRequests.Image")));
             this.btnResetRequests.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnResetRequests.Name = "btnResetRequests";
-            this.btnResetRequests.Size = new System.Drawing.Size(110, 28);
+            this.btnResetRequests.Size = new System.Drawing.Size(102, 22);
             this.btnResetRequests.Text = "Reset requests";
             this.btnResetRequests.Click += new System.EventHandler(this.btnResetRequests_Click);
             // 
@@ -394,6 +388,7 @@ namespace MockingjayApp
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.listView2);
             this.tabPage2.Controls.Add(this.txtKafkaLog);
             this.tabPage2.Controls.Add(this.kafkaButtons);
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
@@ -403,6 +398,45 @@ namespace MockingjayApp
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Kafka";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // listView2
+            // 
+            this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader7,
+            this.columnHeader8,
+            this.columnHeader9,
+            this.columnHeader10});
+            this.listView2.FullRowSelect = true;
+            this.listView2.GridLines = true;
+            this.listView2.HideSelection = false;
+            this.listView2.Location = new System.Drawing.Point(3, 31);
+            this.listView2.MultiSelect = false;
+            this.listView2.Name = "listView2";
+            this.listView2.Size = new System.Drawing.Size(808, 130);
+            this.listView2.SmallImageList = this.imageList1;
+            this.listView2.TabIndex = 2;
+            this.listView2.UseCompatibleStateImageBehavior = false;
+            this.listView2.View = System.Windows.Forms.View.Details;
+            this.listView2.SelectedIndexChanged += new System.EventHandler(this.listView2_SelectedIndexChanged);
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "";
+            this.columnHeader7.Width = 24;
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "Topic";
+            this.columnHeader8.Width = 150;
+            // 
+            // columnHeader9
+            // 
+            this.columnHeader9.Text = "ToTopic";
+            this.columnHeader9.Width = 150;
+            // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "Handled";
             // 
             // txtKafkaLog
             // 
@@ -421,7 +455,10 @@ namespace MockingjayApp
             // 
             this.kafkaButtons.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnKafkaStart,
-            this.btnKafkaStop});
+            this.btnKafkaStop,
+            this.toolStripSeparator4,
+            this.btnAddTopic,
+            this.btnDeleteTopic});
             this.kafkaButtons.Location = new System.Drawing.Point(3, 3);
             this.kafkaButtons.Name = "kafkaButtons";
             this.kafkaButtons.Size = new System.Drawing.Size(808, 25);
@@ -446,7 +483,31 @@ namespace MockingjayApp
             this.btnKafkaStop.Name = "btnKafkaStop";
             this.btnKafkaStop.Size = new System.Drawing.Size(23, 22);
             this.btnKafkaStop.Text = "Stop kafka consumer";
+            this.btnKafkaStop.Visible = false;
             this.btnKafkaStop.Click += new System.EventHandler(this.btnKafkaStop_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnAddTopic
+            // 
+            this.btnAddTopic.Image = ((System.Drawing.Image)(resources.GetObject("btnAddTopic.Image")));
+            this.btnAddTopic.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnAddTopic.Name = "btnAddTopic";
+            this.btnAddTopic.Size = new System.Drawing.Size(79, 22);
+            this.btnAddTopic.Text = "Add topic";
+            this.btnAddTopic.Click += new System.EventHandler(this.btnAddTopic_Click);
+            // 
+            // btnDeleteTopic
+            // 
+            this.btnDeleteTopic.Image = ((System.Drawing.Image)(resources.GetObject("btnDeleteTopic.Image")));
+            this.btnDeleteTopic.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDeleteTopic.Name = "btnDeleteTopic";
+            this.btnDeleteTopic.Size = new System.Drawing.Size(90, 22);
+            this.btnDeleteTopic.Text = "Delete topic";
+            this.btnDeleteTopic.Click += new System.EventHandler(this.btnDeleteTopic_Click);
             // 
             // Main
             // 
@@ -472,8 +533,6 @@ namespace MockingjayApp
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -508,7 +567,6 @@ namespace MockingjayApp
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
@@ -527,6 +585,14 @@ namespace MockingjayApp
         private System.Windows.Forms.ToolStripButton btnKafkaStart;
         private System.Windows.Forms.TextBox txtKafkaLog;
         private System.Windows.Forms.ToolStripButton btnKafkaStop;
+        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ColumnHeader columnHeader7;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
+        private System.Windows.Forms.ColumnHeader columnHeader9;
+        private System.Windows.Forms.ColumnHeader columnHeader10;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripButton btnAddTopic;
+        private System.Windows.Forms.ToolStripButton btnDeleteTopic;
     }
 }
 

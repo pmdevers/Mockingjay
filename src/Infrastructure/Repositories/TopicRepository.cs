@@ -14,10 +14,20 @@ namespace Infrastructure.Repositories
 
         public TopicRepository(ConnectionString connectionString)
         {
-            BsonMapper.Global.RegisterType(
+            BsonMapper.Global.RegisterType<Id<ForTopic>>(
                 serialize: (id) => id.ToString(),
                 deserialize: (bson) => Id<ForTopic>.Parse(bson.AsString));
+            BsonMapper.Global.Entity<Topic>()
+                .Id(x => x.Id);
             _connectionString = connectionString;
+        }
+
+        public Task DeleteAsync(Id<ForTopic> id)
+        {
+            using var database = new LiteDatabase(_connectionString);
+            var collection = database.GetCollection<Topic>();
+            collection.DeleteMany(x => x.Id == id);
+            return Task.CompletedTask;
         }
 
         public async Task<IEnumerable<Topic>> GetAll()
@@ -29,7 +39,10 @@ namespace Infrastructure.Repositories
 
         public Task SaveAsync(Topic topic)
         {
-            throw new NotImplementedException();
+            using var database = new LiteDatabase(_connectionString);
+            var collection = database.GetCollection<Topic>();
+            collection.Upsert(topic);
+            return Task.CompletedTask;
         }
     }
 }
